@@ -62,6 +62,7 @@ create table board_recommend(
 	id varchar2(100) not null,
 	constraint board_recommend_fk foreign key(id) references member(id)
 );
+
 create sequence board_recommend_seq;
 --북마크 게시판용 테이블-----------------------------------------------------------
 create table bookmark_board(
@@ -72,6 +73,7 @@ create table bookmark_board(
 	post_no number not null,
 	constraint bookmark_board_fk foreign key(post_no) references board_recommend(post_no)
 );
+
 create sequence bookmark_board_seq;
 
 -------------------------------------------------------------------------------------
@@ -84,6 +86,7 @@ insert into member values('java','a','김수권');
 
 --북마크 폴더 등록---------------------------------------------------------------
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '요리');
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '사랑');
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '근력운동');
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '공부용 음악');
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'java', '요리');
@@ -130,10 +133,11 @@ insert into channel_member values(channel_member_seq.nextval,
 '강경원', 'https://www.youtube.com/channel/UCuwyPNJScQ5luAV7b8juFfg');
 
 DELETE FROM bookmark_folder where id='kgs' and folder_name='요리';
+DELETE FROM channel_member where channel_name='백종원의 요리비책';
 
 select * from BOOKMARK_FOLDER;
 select * from CHANNEL_MEMBER;
-
+update bookmark_folder set folder_name='맛집' where id='kgs' and folder_name='사랑';
 
 --추천글 등록, 추천글용 폴더 등록---------------------------------------------
 insert into board_recommend(post_no,title,content,time_posted,id)

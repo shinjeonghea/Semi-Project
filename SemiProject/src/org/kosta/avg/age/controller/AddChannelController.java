@@ -5,11 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.kosta.avg.age.model.BookMarkDAO;
 
-public class AddFolderController implements Controller{
+public class AddChannelController implements Controller{
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		BookMarkDAO.getInstance().addFolderMember("kgs", "요리");
+		BookMarkDAO.getInstance().addChannelMember("kgs", "요리", "백종원의 요리비책", "url");
 		return "index.jsp";
 	}
 

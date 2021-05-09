@@ -32,27 +32,6 @@ public class BookMarkDAO {
 			con.close();
 	}
 
-	public void addChannelMember(String id, String folder_name) throws SQLException {
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			
-		} finally {
-
-		}
-	}
-
-	public void deleteChannelMember(int no) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-
-		} finally {
-
-		}
-	}
-
 	public void addFolderMember(String id, String folderName) throws SQLException {
 		// 개인 계정에 추가될 폴더이름을 데이터베이스에 저장
 		// 1. 해당 멤버의 아이디를 저장
@@ -81,9 +60,9 @@ public class BookMarkDAO {
 			StringBuilder sql=new StringBuilder("update bookmark_folder set folder_name=? ");
 			sql.append("where id=? and folder_name=?");
 			pstmt=con.prepareStatement(sql.toString());
-			pstmt.setString(1, id);
-			pstmt.setString(2, beforefolderName);
-			pstmt.setString(3, afterfolderName);
+			pstmt.setString(1, afterfolderName);
+			pstmt.setString(2, id);
+			pstmt.setString(3, beforefolderName);
 			pstmt.executeQuery();
 		} finally {
 			closeAll(pstmt, con);
@@ -104,4 +83,41 @@ public class BookMarkDAO {
 			closeAll(pstmt, con);
 		}
 	}
+	
+	public void addChannelMember(String id, String folderName, String channelName, String channelURL) throws SQLException {
+		//insert into channel_member values(channel_member_seq.nextval,
+		//(select folder_no from bookmark_folder where id='kgs' and folder_name='요리'),
+		//'백종원의 요리비책', 'https://www.youtube.com/channel/UCyn-K7rZLXjGl7VXGweIlcA');
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con=dataSource.getConnection();
+			StringBuilder sql=new StringBuilder("INSERT INTO channel_member VALUES(channel_member_seq.nextval, ");
+			sql.append("(SELECT folder_no FROM bookmark_folder WHERE id=? AND folder_name=?), ");
+			sql.append("?,?)");
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			pstmt.setString(2, folderName);
+			pstmt.setString(3, channelName);
+			pstmt.setString(4, channelURL);
+			pstmt.executeQuery();
+		} finally {
+			closeAll(pstmt, con);
+		}
+	}
+
+	public void deleteChannelMember(String channelName) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con=dataSource.getConnection();
+			String sql="DELETE FROM channel_member WHERE channel_name=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, channelName);
+			pstmt.executeQuery();
+		} finally {
+			closeAll(pstmt, con);
+		}
+	}
+
 }
