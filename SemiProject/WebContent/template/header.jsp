@@ -41,6 +41,14 @@
 			<a class="nav-link" href="#"><span>채널 추가</span>
 			</a>
 		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="#"><span>즐겨찾기 폴더 삭제</span>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="#"><span>채널 삭제</span>
+			</a>
+		</li>
 	</div>
 	
 	<!-- Divider -->

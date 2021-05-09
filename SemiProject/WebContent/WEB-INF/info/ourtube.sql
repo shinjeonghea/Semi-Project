@@ -218,6 +218,42 @@ select * from MEMBER;
 --updateHit---------------------------
 update board_recommend set hits=hits+1 where no=1
 
-  
-  
- -- 
+-- getTotalPostCount ----------------------------------- 
+select count(*) from board_recommend;
+
+--paging을 위한 SQL문------------------------------------------------------
+select rnum, br.post_no, br.title, time_posted, br.hits, m.nick 
+from (
+	select  row_number() over(order by post_no desc) as rnum, br.post_no, br.title, to_char(br.time_posted,'yyyy-mm-dd') as time_posted, br.hits, br.id
+	from board_recommend br
+) br, member m
+where m.id=br.id AND rnum BETWEEN 1 AND 5;
+
+
+-- 추천글 등록 -------------------------------------
+select * from channel_member;
+select * from bookmark_folder;
+select * from bookmark_board;
+select * from board_recommend;
+select * from member;
+
+insert into member values('IU', '1234', '아이유');
+insert into member(id, password, nick) values('kmk', '5678', '민콩이');
+
+insert into bookmark_board(no,folder_name,channel_name,channel_url,post_no)
+values(bookmark_board_seq.nextval,'근력운동','트리거15초','https://www.youtube.com/channel/UCoyogo_Fg-Z5jDOQz6Rt6eA','1');
+
+insert into board_recommend(post_no, title,content,time_posted,id)
+values(board_recommend_seq.nextval,'이거 진짜 ㄹㅇ 추천함','진짜 너무 좋다 이 플레이리스트 개쩔어 갬성 오져 진짜 와 박수를 치고싶다 후..', sysdate, 'kmk');
+
+insert into board_recommend(post_no,title,content,time_posted,id)
+values(board_recommend_seq.nextval,'ㅊㅊ','ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ', sysdate, 'IU');
+
+insert into board_recommend(post_no,title,content,time_posted,id)
+values(board_recommend_seq.nextval,'진짜 강추','ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅋㅋㅋㅇㅇㅋㅋㅋㅎㅎㅋㅎㅎ', sysdate, 'kgs');
+
+insert into board_recommend(post_no,title,content,time_posted,id)
+values(board_recommend_seq.nextval,'진짜 강추','ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅋㅋㅋㅇㅇㅋㅋㅋㅎㅎㅋㅎㅎ', sysdate, 'java');
+
+
+

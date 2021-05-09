@@ -36,11 +36,12 @@ public class PostDAO {
 	
 	/**
 	 * 게시물 목록 리스트를 반환하는 메서드
+	 * 페이징 적용 ->  row_number()를 사용한다.
 	 * @author KMK
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<PostVO> getPostingList() throws SQLException{
+	public ArrayList<PostVO> getPostingList(PagingBean pagingBean) throws SQLException{
 		ArrayList<PostVO> list = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -48,20 +49,25 @@ public class PostDAO {
 		
 		try {
 			con = getConnection();
-			StringBuilder sql = new StringBuilder("select br.post_no, br.title, m.nick ");
-			sql.append(", to_char(br.time_posted, 'yyyy-mm-dd') as time_posted, br.hits ");
-			sql.append("from member m, BOARD_RECOMMEND br ");
-			sql.append("where m.id = br.id");
+			StringBuilder sql = new StringBuilder("select rnum, br.post_no, br.title, time_posted, br.hits, m.nick ");
+			sql.append("from ( ");
+			sql.append("select  row_number() over(order by post_no desc) as rnum, br.post_no, br.title ");
+			sql.append(", to_char(br.time_posted,'yyyy-mm-dd') as time_posted, br.hits, br.id ");
+			sql.append("from board_recommend br ");
+			sql.append(") br, member m ");
+			sql.append(" where m.id=br.id AND rnum BETWEEN ? AND ?");
 			pstmt  = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, pagingBean.getStartRowNumber());
+			pstmt.setInt(2, pagingBean.getEndRowNumber());
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				PostVO pvo = new PostVO();
-				pvo.setPostNo(rs.getString(1));
-				pvo.setTitle(rs.getString(2));
-				pvo.setTimePosted(rs.getString(4));
-				pvo.setHits(rs.getInt(5));
+				pvo.setPostNo(rs.getString("post_no"));
+				pvo.setTitle(rs.getString("title"));
+				pvo.setTimePosted(rs.getString("time_posted"));
+				pvo.setHits(rs.getInt("hits"));
 				MemberVO mvo = new MemberVO();
-				mvo.setNick(rs.getString(3));
+				mvo.setNick(rs.getString("nick"));
 				pvo.setMvo(mvo);
 				list.add(pvo);
 			}
@@ -116,6 +122,24 @@ public class PostDAO {
 		}finally{
 			closeAll(pstmt,con);
 		}
+	}
+	
+	public int getTotalPostCount() throws SQLException{
+		int totalCount=0;
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con=dataSource.getConnection();
+			String sql="select count(*) from board_recommend";
+			pstmt=con.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			if(rs.next())
+				totalCount=rs.getInt(1);
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return totalCount;
 	}
 	
 	
