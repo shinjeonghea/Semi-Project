@@ -2,7 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+   <script type="text/javascript">
+	function logout(){
+		var f=confirm("로그아웃하시겠습니까?");
+		if(f)
+			location.href="${pageContext.request.contextPath}/LogoutController.do";
+	}
+</script>
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -51,20 +57,35 @@
 
                         <!-- Nav Item - Messages -->
                       
-
+						
                         <div class="topbar-divider d-none d-sm-block"></div>
-
+						
                         <!-- Nav Item - User Information -->
+
                         <li class="nav-item dropdown no-arrow">
+                        <c:choose>
+                        <c:when test="${sessionScope.mvo==null}">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">접속하기</span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
+                            </c:when>
+                            <c:otherwise>
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.mvo.nick} 님</span>
+                                <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
+                            </a>
+                            </c:otherwise>
+                            </c:choose>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                <c:choose>
+                                <c:when test="${sessionScope.mvo==null}">
                                 <a class="dropdown-item" href="member/login.jsp">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                    	로그인
@@ -73,9 +94,17 @@
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     	회원가입
                                 </a>
-                               
+                                </c:when>
+                                <c:otherwise>
+                                <a class="dropdown-item" href="javascript:logout()">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                   로그아웃
+                                </a>
+                                </c:otherwise>
+                                </c:choose>
+                               </div>
                         </li>
-
+                  
                     </ul>
 
                 </nav>
