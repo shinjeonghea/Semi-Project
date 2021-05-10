@@ -225,3 +225,5 @@ select br.title, to_char(br.time_posted,'YYYY.MM.DD  HH24:MI:SS') as time_posted
   
   --updateHit---------------------------
   update board_recommend set hits=hits+1 where no=1
+  
+  

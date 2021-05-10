@@ -87,21 +87,29 @@
       </div></li>
 
    <!-- Nav Item - Utilities Collapse Menu -->
+   <!-- 폴더 들고오는 foreach문 -->
+   <c:forEach var="folderlist" items="${sessionScope.flist}" varStatus="status">
    <li class="nav-item">
-      <%-- data-target에 id값 넣기! --%> <a class="nav-link collapsed" href="#"
-      data-toggle="collapse" data-target="#hello" aria-expanded="true"
-      aria-controls="#hello"> <i class="fas fa-fw fa-wrench"></i> <span>Utilities</span>
-   </a> <%-- id값을 a태그의 data-target으로 넣어주기! --%>
-      <div id="hello" class="collapse" aria-labelledby="hello"
+      <%-- data-target에 id값 넣기! --%>
+      <a class="nav-link collapsed" href="#"
+      data-toggle="collapse" data-target="#hello${status.index}" aria-expanded="true"
+      aria-controls="#hello${status.index}"> <i class="fas fa-fw fa-wrench"></i> <span>${folderlist.folderName}</span>
+   </a> 
+   <%-- id값을 a태그의 data-target으로 넣어주기! --%>
+   
+      <div id="hello${status.index}" class="collapse" aria-labelledby="hello${status.index}"
          data-parent="#accordionSidebar">
          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="utilities-color.html">Colors</a> <a
-               class="collapse-item" href="utilities-border.html">Borders</a> <a
-               class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+         <c:forEach var="channellist" items="${sessionScope.clist}" >
+   		 <c:if test="${folderlist.folderName eq channellist.folderName}">
+            <a class="collapse-item" >${channellist.channelName}</a>
+         </c:if>
+         </c:forEach>
          </div>
       </div>
+
    </li>
+   </c:forEach>
 
    <%-- 
    <!-- Divider -->

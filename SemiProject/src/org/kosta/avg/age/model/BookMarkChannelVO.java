@@ -1,15 +1,20 @@
 package org.kosta.avg.age.model;
 
-public class BookMarkVO {
+public class BookMarkChannelVO {
 	private String folderName;
 	private String channelName;
 	private String channelURL;
-	public BookMarkVO(String folderName, String channelName, String channelURL) {
+	public BookMarkChannelVO(String folderName, String channelName, String channelURL) {
 		super();
 		this.folderName = folderName;
 		this.channelName = channelName;
 		this.channelURL = channelURL;
 	}
+	public BookMarkChannelVO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	public String getFolderName() {
 		return folderName;
 	}
@@ -28,14 +33,10 @@ public class BookMarkVO {
 	public void setChannelURL(String channelURL) {
 		this.channelURL = channelURL;
 	}
-	public BookMarkVO() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	@Override
 	public String toString() {
-		return "BookMarkVO [folderName=" + folderName + ", channelName=" + channelName + ", channelURL=" + channelURL
-				+ "]";
+		return "BookMarkChannelVO [folderName=" + folderName + ", channelName=" + channelName + ", channelURL="
+				+ channelURL + "]";
 	}
 	
 }
