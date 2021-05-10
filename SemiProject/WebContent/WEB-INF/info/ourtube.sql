@@ -255,5 +255,94 @@ values(board_recommend_seq.nextval,'진짜 강추','ㅎㅎㅎㅎㅎㅎㅎㅎㅎ�
 insert into board_recommend(post_no,title,content,time_posted,id)
 values(board_recommend_seq.nextval,'진짜 강추','ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅋㅋㅋㅇㅇㅋㅋㅋㅎㅎㅋㅎㅎ', sysdate, 'java');
 
+--------------------------------------------
+select * from channel_member;
+select * from bookmark_folder;
+-- 즐겨찾기에 해당하는 채널 찾기 (id를 구별할 수 없음.)------------------------------------------------
+select bf.folder_name, cm.channel_name, cm.channel_url
+from bookmark_folder bf, channel_member cm
+where bf.folder_no=cm.folder_no and bf.folder_name='요리';
+
+-- 즐겨찾기에 해당하는 채널 찾기 (id를 구별할 수 있음.)------------------------------------------------
+select bf.folder_name, bf.folder_no, cm.channel_name, cm.channel_url
+from bookmark_folder bf, channel_member cm
+where bf.folder_no=cm.folder_no and bf.folder_name='요리' and bf.id='java';
+
+insert into channel_member values(channel_member_seq.nextval,
+(select folder_no from bookmark_folder where id='java' and folder_name='요리'),
+'백종원의 요리비책', 'https://www.youtube.com/channel/UCyn-K7rZLXjGl7VXGweIlcA');
+
+
+-- 글쓰기시에 bookmark_board에 insert함. ----------------------------------------------------------------------------------
+select * from bookmark_board;
+select * from bookmark_folder;
+select * from board_recommend;
+select * from channel_member;
+select * from member;
+	
+	-- 즐겨찾기에 해당하는 채널 찾기
+		select bf.folder_name, bf.folder_no, cm.channel_name, cm.channel_url
+		from bookmark_folder bf, channel_member cm
+		where bf.folder_no=cm.folder_no and bf.folder_name='요리' and bf.id='java';
+		
+	-- 다른 예시
+		select bf.folder_name, bf.folder_no, cm.channel_name, cm.channel_url
+		from bookmark_folder bf, channel_member cm
+		where bf.folder_no=cm.folder_no and bf.folder_name='근력운동' and bf.id='kgs';
+		
+	-- 이거 이상함
+	insert into bookmark_board (no,folder_name,channel_name,channel_url,post_no)
+	values(
+		bookmark_board_seq.nextval,
+		(	select bf.folder_name
+			from bookmark_folder bf, channel_member cm
+			where bf.folder_no=cm.folder_no and bf.folder_name='근력운동' and bf.id='kgs'
+		), 
+		(
+			select cm.channel_name
+			from bookmark_folder bf, channel_member cm
+			where bf.folder_no=cm.folder_no and bf.folder_name='근력운동' and bf.id='kgs'),
+		(
+			select cm.channel_url
+			from bookmark_folder bf, channel_member cm
+			where bf.folder_no=cm.folder_no and bf.folder_name='근력운동' and bf.id='kgs'
+		),
+		8
+	);
+
+	-- ORA-01427: single-row subquery returns more than one row
+	insert into bookmark_board (no,folder_name,channel_name,channel_url,post_no)
+	values(
+		bookmark_board_seq.nextval,
+		(	select bf.folder_name
+			from bookmark_folder bf, channel_member cm
+			where bf.folder_no=cm.folder_no and bf.folder_name='근력운동' and bf.id='kgs'
+		), 
+		(
+			select cm.channel_name
+			from bookmark_folder bf, channel_member cm
+			where bf.folder_no=cm.folder_no and bf.folder_name='근력운동' and bf.id='kgs'),
+		(
+			select cm.channel_url
+			from bookmark_folder bf, channel_member cm
+			where bf.folder_no=cm.folder_no and bf.folder_name='근력운동' and bf.id='kgs'
+		),
+		8
+	);
+
+
+
+
+
+
+
+--고보승님(kgs) 폴더 확인-------------------------------------
+select bf.folder_name, bf.folder_no, cm.channel_name, cm.channel_url
+from bookmark_folder bf, channel_member cm
+where bf.folder_no=cm.folder_no and bf.id='kgs';
+
+
+-- 
+select folder_name, channel_name, channel_url from bookmark_board where post_no = 48;
 
 

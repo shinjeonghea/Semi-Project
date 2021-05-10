@@ -40,6 +40,20 @@
 			</td>
 		</tr>
 	</c:if> --%>
+	
+</table>
+
+<br><br>
+<hr>
+
+<h5>추천 채널</h5>
+
+<table>
+	<c:forEach items="${ requestScope.channelList }" var="ch">
+		<tr>
+			<td>${ ch.channelName }</td>
+		</tr>
+	</c:forEach>
 </table>
 
 

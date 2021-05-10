@@ -2,6 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<script>
+   function openWritePostForm(){
+      document.WritePostForm.submit();
+   }
+</script>
+
 <div class="card shadow mb-4">
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-primary">추천 게시판</h6>
@@ -40,10 +46,18 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			<button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" 
+			 <form name="WritePostForm" action="${pageContext.request.contextPath}/WritePostFormController.do" method="post">
+				 <input type="hidden" name="WritePostForm" value="${requestScope.bvo.postNo}">
+			 </form>
+			 <button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="float: right"
+			 	 onclick="openWritePostForm()"><i class="fas fa-fw fa-pencil-alt"></i>글쓰기</button>
+			 
+			 <%-- 
+			<button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white"
 				style="float: right">
 				<i class="fas fa-fw fa-pencil-alt"></i> 글쓰기
 			</button>
+			--%>
 		</div>
 		<%-- 페이징 --%>
 		<%-- 

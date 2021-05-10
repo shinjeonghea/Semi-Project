@@ -4,7 +4,8 @@ public class BookMarkVO {
 	private String folderName;
 	private String channelName;
 	private String channelURL;
-	public BookMarkVO(String folderName, String channelName, String channelURL) {
+	private int folderNo;
+	public BookMarkVO(String folderName, String channelName, String channelURL, int folderNo) {
 		super();
 		this.folderName = folderName;
 		this.channelName = channelName;
@@ -28,6 +29,13 @@ public class BookMarkVO {
 	public void setChannelURL(String channelURL) {
 		this.channelURL = channelURL;
 	}
+	
+	public int getFolderNo() {
+		return folderNo;
+	}
+	public void setFolderNo(int folderNo) {
+		this.folderNo = folderNo;
+	}
 	public BookMarkVO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -35,7 +43,8 @@ public class BookMarkVO {
 	@Override
 	public String toString() {
 		return "BookMarkVO [folderName=" + folderName + ", channelName=" + channelName + ", channelURL=" + channelURL
-				+ "]";
+				+ ", folderNo=" + folderNo + "]";
 	}
+	
 	
 }
