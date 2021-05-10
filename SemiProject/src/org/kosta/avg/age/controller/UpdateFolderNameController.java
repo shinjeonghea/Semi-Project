@@ -8,7 +8,7 @@ import org.kosta.avg.age.model.BookMarkDAO;
 public class UpdateFolderNameController implements Controller{
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		BookMarkDAO.getInstance().updateFolderNameMember("kgs", "맛집", "사랑");
+		BookMarkDAO.getInstance().updateFolderNameMember("kgs", "맛집", "쿠킹");
 		return "index.jsp";
 	}
 
