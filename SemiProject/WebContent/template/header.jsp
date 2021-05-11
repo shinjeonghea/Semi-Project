@@ -1,6 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript">
+   //체크박스 전체 선택
+   function checkAll(chk){
+      var chbx = radioGroup.elements;
+      for (var i=0;i<chbx.length ;i++ ){
+         if (chbx[i].name==chk){
+            chbx[i].checked = true ;
+         }else{
+             chbx[i].checked = false;
+         } 
+      }
+   }
+   
+</script>
 
 <!-- Sidebar -->
 <ul
@@ -56,45 +70,23 @@
    
    <%-- 즐겨찾기 폴더 (for) --%>
    <div class="sidebar-heading">즐겨찾기 폴더</div>
-   <li class="nav-item"><a class="nav-link collapsed" href="#"
-      data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-      aria-controls="collapseTwo"> <i class="fas fa-fw fa-cog"></i> <span>Components</span>
-   </a>
-      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-         data-parent="#accordionSidebar">
-         <div class="bg-white py-2 collapse-inner rounded">
-            <%--  <a class="collapse-item"></a> 에 채널 명 넣어주기 (for) --%>
-            <a class="collapse-item" href="buttons.html">Buttons</a> <a
-               class="collapse-item" href="cards.html">Cards</a>
-         </div>
-      </div>
-   </li>
-
-   <!-- Nav Item - Utilities Collapse Menu -->
-   <li class="nav-item"><a class="nav-link collapsed" href="#"
-      data-toggle="collapse" data-target="#collapseUtilities"
-      aria-expanded="true" aria-controls="collapseUtilities"> <i
-         class="fas fa-fw fa-wrench"></i> <span>Utilities</span>
-   </a>
-      <div id="collapseUtilities" class="collapse"
-         aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-         <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="utilities-color.html">Colors</a> <a
-               class="collapse-item" href="utilities-border.html">Borders</a> <a
-               class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
-         </div>
-      </div></li>
-
+   
    <!-- Nav Item - Utilities Collapse Menu -->
    <!-- 폴더 들고오는 foreach문 -->
+   <form name="radioGroup">
+   <input type='reset' class="btn btn btn-outline-secondary btn-sm btn-primary text-white"  value="초기화">
    <c:forEach var="folderlist" items="${sessionScope.flist}" varStatus="status">
    <li class="nav-item">
+      <div style="display:inline-block">
+      <input type="radio" name="${folderlist.folderName}" onclick="checkAll(this.name)">
+      </div>
       <%-- data-target에 id값 넣기! --%>
+      <div style="display:inline-block">
       <a class="nav-link collapsed" href="#"
       data-toggle="collapse" data-target="#hello${status.index}" aria-expanded="true"
-      aria-controls="#hello${status.index}"> <i class="fas fa-fw fa-wrench"></i> <span>${folderlist.folderName}</span>
+      aria-controls="#hello${status.index}"><span>${folderlist.folderName}</span>
    </a> 
+   </div>
    <%-- id값을 a태그의 data-target으로 넣어주기! --%>
    
       <div id="hello${status.index}" class="collapse" aria-labelledby="hello${status.index}"
@@ -102,14 +94,15 @@
          <div class="bg-white py-2 collapse-inner rounded">
          <c:forEach var="channellist" items="${sessionScope.clist}" >
    		 <c:if test="${folderlist.folderName eq channellist.folderName}">
-            <a class="collapse-item" >${channellist.channelName}</a>
+            <a class="collapse-item" ><input type="checkbox" name="${folderlist.folderName}"> ${channellist.channelName}</a>
          </c:if>
          </c:forEach>
          </div>
       </div>
-
    </li>
    </c:forEach>
+   </form>
+   
 
    <%-- 
    <!-- Divider -->
