@@ -221,3 +221,8 @@ select br.title, to_char(br.time_posted,'YYYY.MM.DD  HH24:MI:SS') as time_posted
   
   --updateHit---------------------------
   update board_recommend set hits=hits+1 where no=1
+  
+  
+  delete 
+  from bookmark_folder bf, channel_member cm
+  where bf.folder_no=cm.folder_no and id=? and folder_no=?

@@ -9,7 +9,7 @@ public class PostVO {
 	private String timePosted;
 	private int hits;
 	private MemberVO mvo;
-	private ArrayList<BookMarkVO> list;
+	private ArrayList<BookMarkChannelVO> list;
 	public PostVO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -60,10 +60,10 @@ public class PostVO {
 	public void setMvo(MemberVO mvo) {
 		this.mvo = mvo;
 	}
-	public ArrayList<BookMarkVO> getList() {
+	public ArrayList<BookMarkChannelVO> getList() {
 		return list;
 	}
-	public void setList(ArrayList<BookMarkVO> list) {
+	public void setList(ArrayList<BookMarkChannelVO> list) {
 		this.list = list;
 	}
 	@Override
