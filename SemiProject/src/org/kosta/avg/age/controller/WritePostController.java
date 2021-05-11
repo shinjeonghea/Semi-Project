@@ -12,12 +12,11 @@ public class WritePostController implements Controller {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		/*
-		 * HttpSession session=request.getSession(false);
-		 * if(session==null||session.getAttribute("mvo")==null||
-		 * request.getMethod().equals("POST")==false){ return "redirect:index.jsp"; }
-		 */
-		
+		HttpSession session = request.getSession(false);
+		if (session == null || session.getAttribute("mvo") == null || request.getMethod().equals("POST") == false) {
+			return "redirect:index.jsp";
+		}
+
 		// 라디오 버튼으로 누른 폴더 명을 받아온다.
 		String folderName = request.getParameter("addFolder");
 		String title = request.getParameter("title");
@@ -27,13 +26,9 @@ public class WritePostController implements Controller {
 		pvo.setTitle(title);
 		pvo.setContent(content);
 //        pvo.setMvo((MemberVO)session.getAttribute("mvo"));  
-		
 
-		// 임시 사용자 kgs
-		MemberVO mvo = new MemberVO();
-		mvo.setId("kgs");
-		mvo.setNick("고보승");
-		mvo.setPassword("1");
+		// 세션에 mvo 있으면 ~ 그 사용자 정보 가져옴.
+		MemberVO mvo = (MemberVO) session.getAttribute("mvo");
 		pvo.setMvo(mvo);
 		PostDAO.getInstance().posting(folderName, pvo);
 		String path = "redirect:PostDetailNoHitsController.do?postNo=" + pvo.getPostNo();

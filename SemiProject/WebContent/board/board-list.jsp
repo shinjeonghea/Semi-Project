@@ -37,8 +37,17 @@
 					<c:forEach items="${ requestScope.postList }" var="pvo">
 					<tr>
 						<td>${ pvo.postNo }</td>
-						<td><a
-								href="${pageContext.request.contextPath}/PostDetailController.do?postNo=${ pvo.postNo }">${ pvo.title }</a></td>
+						<td>
+							<c:choose>
+								<c:when test="${ sessionScope.mvo!=null }">
+									<a
+								href="${pageContext.request.contextPath}/PostDetailController.do?postNo=${ pvo.postNo }">${ pvo.title }</a>
+								</c:when>
+								<c:otherwise>
+									${ pvo.title }
+								</c:otherwise>
+							</c:choose>
+						</td>
 						<td>${ pvo.mvo.nick }</td>
 						<td>${ pvo.timePosted }</td>
 						<td>${ pvo.hits }</td>

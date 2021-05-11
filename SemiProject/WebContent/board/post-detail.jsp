@@ -41,6 +41,7 @@
 		</tr>
 	</c:if> --%>
 	
+	
 </table>
 
 <br><br>
@@ -54,9 +55,24 @@
 			<td>${ ch.channelName }</td>
 		</tr>
 	</c:forEach>
+	<tr>
+		<form action="" method="post">
+			<input class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="float: right" type="submit" value="채널 가져오기">
+		</form>
+			 
+	</tr>
 </table>
 
 
+<br><br><br>
+<%-- 삭제 버튼 --%>
+<c:if test="${ requestScope.pvo.mvo.id==sessionScope.mvo.id }">
+		<form name="deleteForm"
+				action="${pageContext.request.contextPath}/DeletePostController.do" method="post">
+			<input 	type="hidden" name="postNo" value="${requestScope.pvo.postNo}">
+		</form>	
+		<button type="button" onclick="deletePost()" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="float: right">글 삭제</button>
+</c:if>
 
 
 

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
+import oracle.net.aso.r;
+
 public class BookMarkDAO {
 	private static BookMarkDAO dao = new BookMarkDAO();
 	private DataSource dataSource;
@@ -33,8 +35,8 @@ public class BookMarkDAO {
 			con.close();
 	}
 
-	public ArrayList<Integer> getFolderNameByMemberId(String id) throws SQLException {
-		ArrayList<Integer> list = new ArrayList<Integer>();
+	public ArrayList<BookMarkFolderVO> getFolderNameByMemberId(String id) throws SQLException {
+		ArrayList<BookMarkFolderVO> list = new ArrayList<BookMarkFolderVO>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -45,7 +47,10 @@ public class BookMarkDAO {
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				list.add(rs.getInt(1));
+				BookMarkFolderVO bfvo = new BookMarkFolderVO();
+				bfvo.setFolderNo(rs.getInt(1));
+				bfvo.setFolderName(rs.getString(2));
+				list.add(bfvo);
 			}
 		} finally {
 			closeAll(rs, pstmt, con);
@@ -53,8 +58,8 @@ public class BookMarkDAO {
 		return list;
 	}
 
-	public ArrayList<BookMarkVO> getChannelByMemberId(Integer i) throws SQLException {
-		ArrayList<BookMarkVO> list = new ArrayList<BookMarkVO>();
+	public ArrayList<BookMarkChannelVO> getChannelByMemberId(Integer i) throws SQLException {
+		ArrayList<BookMarkChannelVO> list = new ArrayList<BookMarkChannelVO>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -65,11 +70,11 @@ public class BookMarkDAO {
 			pstmt.setInt(1, i);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				BookMarkVO bvo = new BookMarkVO();
-				bvo.setFolderName(rs.getString(1));
-				bvo.setChannelName(rs.getString(2));
-				bvo.setChannelURL(rs.getString(3));
-				list.add(bvo);
+				BookMarkChannelVO bcvo = new BookMarkChannelVO();
+				bcvo.setFolderName(rs.getString(1));
+				bcvo.setChannelName(rs.getString(2));
+				bcvo.setChannelURL(rs.getString(3));
+				list.add(bcvo);
 			}
 		} finally {
 			closeAll(rs, pstmt, con);
@@ -109,17 +114,11 @@ public class BookMarkDAO {
 			StringBuilder sql=new StringBuilder("update bookmark_folder set folder_name=? ");
 			sql.append("where id=? and folder_name=?");
 			pstmt=con.prepareStatement(sql.toString());
-
 			pstmt.setString(1, afterfolderName);
-
 			pstmt.setString(2, id);
-
 			pstmt.setString(3, beforefolderName);
-
 			pstmt.executeUpdate();
-
 		} finally {
-
 			closeAll(pstmt, con);
 
 		}
@@ -195,4 +194,17 @@ public class BookMarkDAO {
 			closeAll(pstmt, con);
 		}
 	}
+	
+	/**
+	 * 게시글에 연결된 폴더를 내 폴더로 가져온다!
+	 * @return
+	 */
+	public ArrayList<BookMarkChannelVO> addChannelFromPost() {
+		ArrayList<BookMarkChannelVO> list = new  ArrayList<BookMarkChannelVO>();
+		
+		return list;
+		
+	}
+	
+	
 }

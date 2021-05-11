@@ -164,8 +164,8 @@ public class PostDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<BookMarkVO> loadFolderList(String id) throws SQLException {
-		ArrayList<BookMarkVO> list = new ArrayList<BookMarkVO>();
+	public ArrayList<BookMarkChannelVO> loadFolderList(String id) throws SQLException {
+		ArrayList<BookMarkChannelVO> list = new ArrayList<BookMarkChannelVO>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -177,7 +177,7 @@ public class PostDAO {
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				BookMarkVO bvo = new BookMarkVO();
+				BookMarkChannelVO bvo = new BookMarkChannelVO();
 				bvo.setFolderName(rs.getString(3));
 				list.add(bvo);
 			}
@@ -197,8 +197,8 @@ public class PostDAO {
 	 */
 	
 	// 이건 뭔 메서드??
-	public ArrayList<BookMarkVO> loadChannelList(String folderName, String id) throws SQLException {
-		ArrayList<BookMarkVO> channelList = new ArrayList<BookMarkVO>();
+	public ArrayList<BookMarkChannelVO> loadChannelList(String folderName, String id) throws SQLException {
+		ArrayList<BookMarkChannelVO> channelList = new ArrayList<BookMarkChannelVO>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -213,11 +213,10 @@ public class PostDAO {
 			pstmt.setString(2, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				BookMarkVO bvo = new BookMarkVO();
+				BookMarkChannelVO bvo = new BookMarkChannelVO();
 				bvo.setFolderName(rs.getString("folder_name"));
 				bvo.setChannelName(rs.getString("channel_name"));
 				bvo.setChannelURL(rs.getString("channel_url"));
-				bvo.setFolderNo(rs.getInt("folder_no"));
 				channelList.add(bvo);
 			}
 		} finally {
@@ -234,13 +233,15 @@ public class PostDAO {
 	 * @throws SQLException
 	 */
 	public void posting(String folderName, PostVO pvo) throws SQLException {
-		ArrayList<BookMarkVO> list = new ArrayList<BookMarkVO>();
+		ArrayList<BookMarkChannelVO> list = new ArrayList<BookMarkChannelVO>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			con = getConnection();
-			// BookmarkVO 리스트 만들기 (채널 리스트임...)
+			// 수동 커밋 모드로 변경
+			con.setAutoCommit(false);
+			// BookMarkChannelVO 리스트 만들기 (채널 리스트임...)
 			StringBuilder sql1 = new StringBuilder(
 					"select bf.folder_name, cm.channel_name, cm.channel_url ");
 			sql1.append("from bookmark_folder bf, channel_member cm ");
@@ -250,7 +251,7 @@ public class PostDAO {
 			pstmt.setString(2, pvo.getMvo().getId());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				BookMarkVO bvo = new BookMarkVO();
+				BookMarkChannelVO bvo = new BookMarkChannelVO();
 				bvo.setFolderName(rs.getString("folder_name"));
 				bvo.setChannelName(rs.getString("channel_name"));
 				bvo.setChannelURL(rs.getString("channel_url"));
@@ -273,19 +274,31 @@ public class PostDAO {
 				sql3.append("insert into bookmark_board(no,folder_name,channel_name,channel_url,post_no) ");
 				sql3.append("values(bookmark_board_seq.nextval, ?, ?, ?, board_recommend_seq.currval)");
 				pstmt = con.prepareStatement(sql3.toString());
-				BookMarkVO bvo = list.get(i);
+				BookMarkChannelVO bvo = list.get(i);
 				pstmt.setString(1, bvo.getFolderName());
 				pstmt.setString(2, bvo.getChannelName());
 				pstmt.setString(3, bvo.getChannelURL());
 				pstmt.executeUpdate();
 				pstmt.close();
 			}
+			
+			// 3가지 작업이 모두 끝나면 커밋 
+			con.commit();
+			
 			pstmt = con.prepareStatement("select board_recommend_seq.currval from dual");
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				pvo.setPostNo(rs.getString(1));
 			}
-		} finally {
+		} catch(Exception e) {
+			con.rollback();
+			System.out.println("게시물 등록 작업 중, 문제 발생하여 rollback");
+			throw e; // 호출 측으로 Exception 정보를 전달하고자 할 때, throw를 이용해 다시 발생시키면 됨. 
+			// (catch로 잡았지만, ui츠게서도 알게하기위해서! throw로 또 발생시켜버림.)
+		/*
+		 * DAO 예외발생 -> DAO의 catch 수행 -> DAO의 캐치구문에서 throw e 발생 -> 메인에서 캐치
+		 */
+		}finally {
 			closeAll(rs, pstmt, con);
 		}
 	}
@@ -296,8 +309,8 @@ public class PostDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<BookMarkVO> showUploadedChannelList(String postNo) throws SQLException {
-		ArrayList<BookMarkVO> list = new ArrayList<BookMarkVO>();
+	public ArrayList<BookMarkChannelVO> showUploadedChannelList(String postNo) throws SQLException {
+		ArrayList<BookMarkChannelVO> list = new ArrayList<BookMarkChannelVO>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -308,7 +321,7 @@ public class PostDAO {
 			pstmt.setString(1, postNo);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				BookMarkVO bvo = new BookMarkVO();
+				BookMarkChannelVO bvo = new BookMarkChannelVO();
 				bvo.setFolderName(rs.getString(1));
 				bvo.setChannelName(rs.getString(2));
 				bvo.setChannelURL(rs.getString(3));
@@ -318,5 +331,36 @@ public class PostDAO {
 			closeAll(rs, pstmt, con);
 		}
 		return list;
+	}
+	
+	/**
+	 * 글번호에 해당하는 게시물을 삭제하는 메서드
+	 * 트랜잭션 처리
+	 * @param no
+	 * @throws SQLException
+	 */
+	public void deletePosting(int postNo) throws SQLException{
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try{
+			con=getConnection(); 
+			// 수동 커밋 모드로 변경
+			con.setAutoCommit(false);
+			
+			pstmt=con.prepareStatement("delete from bookmark_board where post_no=?");
+			pstmt.setInt(1, postNo);		
+			pstmt.executeUpdate();	
+			pstmt.close();
+			pstmt=con.prepareStatement("delete from board_recommend where post_no=?");
+			pstmt.setInt(1, postNo);		
+			pstmt.executeUpdate();	
+			con.commit();
+		}catch(Exception e) {
+			con.rollback();
+			System.out.println("게시물 삭제 작업 중, 문제 발생하여 rollback");
+			throw e; 
+		}finally{
+			closeAll(pstmt,con);
+		}
 	}
 }
