@@ -226,4 +226,6 @@ select br.title, to_char(br.time_posted,'YYYY.MM.DD  HH24:MI:SS') as time_posted
   --updateHit---------------------------
   update board_recommend set hits=hits+1 where no=1
   
+  --아이디에 맞는 사람 불러오기
+  select count(*) from member where id='kgs';
   

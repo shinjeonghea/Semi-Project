@@ -42,7 +42,7 @@
                                     </div>
                                     <form class="user" method="post" action="${pageContext.request.contextPath}/LoginController.do">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
+                                            <input type="text" class="form-control-join form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="id" name="id">
                                         </div>
