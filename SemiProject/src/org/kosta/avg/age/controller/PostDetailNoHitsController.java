@@ -21,10 +21,14 @@ public class PostDetailNoHitsController implements Controller {
 		
 		// 해당 게시물 번호 가져옴.
 		String postNo =request.getParameter("postNo");
+		System.out.println("게시글 번호: " + postNo);
 		
 		// 해당 게시글에 저장되어있는 추천 폴더의 채널들 불러옴.
 		ArrayList<BookMarkChannelVO> channelList = PostDAO.getInstance().showUploadedChannelList(postNo);
 		request.setAttribute("channelList", channelList);
+		request.setAttribute("folderName", PostDAO.getInstance().getFolderNameByPostNo(postNo));
+		System.out.println("채널 리스트: " + channelList);
+		System.out.println("폴더명" + PostDAO.getInstance().getFolderNameByPostNo(postNo));
 		
 		// 개별 게시물 조회  
 		PostVO pvo = PostDAO.getInstance().getPostingByNo(request.getParameter("postNo"));	

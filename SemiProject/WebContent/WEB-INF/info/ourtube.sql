@@ -346,3 +346,20 @@ where bf.folder_no=cm.folder_no and bf.id='kgs';
 select folder_name, channel_name, channel_url from bookmark_board where post_no = 48;
 
 
+-- 확인
+select * from bookmark_board where post_no=61;
+
+select distinct folder_name from bookmark_board where post_no=61;
+select folder_name, channel_name, channel_url from bookmark_board where post_no=69;
+
+select * from MEMBER;
+
+select folder_name, channel_name, channel_url from bookmark_board where post_no=65;
+
+select folder_name from BOOKMARK_FOLDER where id='kgs';
+
+select count(*) from BOOKMARK_FOLDER where id='kgs' and folder_name='요리';
+
+select count(*) from BOOKMARK_FOLDER where id='kgs' and folder_name='요리121212';
+
+

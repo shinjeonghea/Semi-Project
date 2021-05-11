@@ -58,8 +58,10 @@
 			 <form name="WritePostForm" action="${pageContext.request.contextPath}/WritePostFormController.do" method="post">
 				 <input type="hidden" name="WritePostForm" value="${requestScope.bvo.postNo}">
 			 </form>
-			 <button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="float: right"
+			 <c:if test="${ sessionScope.mvo!=null }">
+			 	<button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="float: right"
 			 	 onclick="openWritePostForm()"><i class="fas fa-fw fa-pencil-alt"></i>글쓰기</button>
+			 </c:if>
 			 
 			 <%-- 
 			<button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white"

@@ -82,6 +82,7 @@ public class PostDAO {
 
 	/**
 	 * no로 통해서 게시물을 보는 메서드
+	 * 
 	 * @param no
 	 * @return
 	 * @throws SQLException
@@ -119,7 +120,7 @@ public class PostDAO {
 		}
 		return pvo;
 	}
-	
+
 	// 게시물 조회시 조회수 +1 해주는 메서드
 	public void updateHit(String no) throws SQLException {
 		Connection con = null;
@@ -134,9 +135,10 @@ public class PostDAO {
 			closeAll(pstmt, con);
 		}
 	}
-	
+
 	/**
 	 * 총 게시물 갯수 (페이징할 때 필요)
+	 * 
 	 * @return
 	 * @throws SQLException
 	 */
@@ -160,6 +162,7 @@ public class PostDAO {
 
 	/**
 	 * 게시물 작성시 라디오 형식으로 폴더를 불러오는 메서드
+	 * 
 	 * @param id
 	 * @return
 	 * @throws SQLException
@@ -195,7 +198,7 @@ public class PostDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	
+
 	// 이건 뭔 메서드??
 	public ArrayList<BookMarkChannelVO> loadChannelList(String folderName, String id) throws SQLException {
 		ArrayList<BookMarkChannelVO> channelList = new ArrayList<BookMarkChannelVO>();
@@ -225,9 +228,10 @@ public class PostDAO {
 
 		return channelList;
 	}
-	
+
 	/**
 	 * 게시물 포스팅 메서드
+	 * 
 	 * @param folderName
 	 * @param pvo
 	 * @throws SQLException
@@ -242,8 +246,7 @@ public class PostDAO {
 			// 수동 커밋 모드로 변경
 			con.setAutoCommit(false);
 			// BookMarkChannelVO 리스트 만들기 (채널 리스트임...)
-			StringBuilder sql1 = new StringBuilder(
-					"select bf.folder_name, cm.channel_name, cm.channel_url ");
+			StringBuilder sql1 = new StringBuilder("select bf.folder_name, cm.channel_name, cm.channel_url ");
 			sql1.append("from bookmark_folder bf, channel_member cm ");
 			sql1.append("where bf.folder_no=cm.folder_no and bf.folder_name=? and bf.id=?");
 			pstmt = con.prepareStatement(sql1.toString());
@@ -260,10 +263,11 @@ public class PostDAO {
 			rs.close();
 			pstmt.close();
 			// br에 insert
-			StringBuilder sql2 = new StringBuilder("insert into board_recommend(post_no,title,content,time_posted,id) ");
+			StringBuilder sql2 = new StringBuilder(
+					"insert into board_recommend(post_no,title,content,time_posted,id) ");
 			sql2.append("values(board_recommend_seq.nextval, ?, ?, sysdate, ?)");
 			pstmt = con.prepareStatement(sql2.toString());
-			pstmt.setString(1, pvo.getTitle());	
+			pstmt.setString(1, pvo.getTitle());
 			pstmt.setString(2, pvo.getContent());
 			pstmt.setString(3, pvo.getMvo().getId());
 			pstmt.executeUpdate();
@@ -281,28 +285,28 @@ public class PostDAO {
 				pstmt.executeUpdate();
 				pstmt.close();
 			}
-			
-			// 3가지 작업이 모두 끝나면 커밋 
+
+			// 3가지 작업이 모두 끝나면 커밋
 			con.commit();
-			
+
 			pstmt = con.prepareStatement("select board_recommend_seq.currval from dual");
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				pvo.setPostNo(rs.getString(1));
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			con.rollback();
 			System.out.println("게시물 등록 작업 중, 문제 발생하여 rollback");
-			throw e; // 호출 측으로 Exception 정보를 전달하고자 할 때, throw를 이용해 다시 발생시키면 됨. 
+			throw e; // 호출 측으로 Exception 정보를 전달하고자 할 때, throw를 이용해 다시 발생시키면 됨.
 			// (catch로 잡았지만, ui츠게서도 알게하기위해서! throw로 또 발생시켜버림.)
-		/*
-		 * DAO 예외발생 -> DAO의 catch 수행 -> DAO의 캐치구문에서 throw e 발생 -> 메인에서 캐치
-		 */
-		}finally {
+			/*
+			 * DAO 예외발생 -> DAO의 catch 수행 -> DAO의 캐치구문에서 throw e 발생 -> 메인에서 캐치
+			 */
+		} finally {
 			closeAll(rs, pstmt, con);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param postNo
@@ -320,7 +324,7 @@ public class PostDAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, postNo);
 			rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				BookMarkChannelVO bvo = new BookMarkChannelVO();
 				bvo.setFolderName(rs.getString(1));
 				bvo.setChannelName(rs.getString(2));
@@ -332,35 +336,84 @@ public class PostDAO {
 		}
 		return list;
 	}
-	
+
 	/**
-	 * 글번호에 해당하는 게시물을 삭제하는 메서드
-	 * 트랜잭션 처리
+	 * 글번호에 해당하는 게시물을 삭제하는 메서드 트랜잭션 처리
+	 * 
 	 * @param no
 	 * @throws SQLException
 	 */
-	public void deletePosting(int postNo) throws SQLException{
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		try{
-			con=getConnection(); 
+	public void deletePosting(int postNo) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = getConnection();
 			// 수동 커밋 모드로 변경
 			con.setAutoCommit(false);
-			
-			pstmt=con.prepareStatement("delete from bookmark_board where post_no=?");
-			pstmt.setInt(1, postNo);		
-			pstmt.executeUpdate();	
+
+			pstmt = con.prepareStatement("delete from bookmark_board where post_no=?");
+			pstmt.setInt(1, postNo);
+			pstmt.executeUpdate();
 			pstmt.close();
-			pstmt=con.prepareStatement("delete from board_recommend where post_no=?");
-			pstmt.setInt(1, postNo);		
-			pstmt.executeUpdate();	
+			pstmt = con.prepareStatement("delete from board_recommend where post_no=?");
+			pstmt.setInt(1, postNo);
+			pstmt.executeUpdate();
 			con.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			con.rollback();
 			System.out.println("게시물 삭제 작업 중, 문제 발생하여 rollback");
-			throw e; 
-		}finally{
-			closeAll(pstmt,con);
+			throw e;
+		} finally {
+			closeAll(pstmt, con);
 		}
 	}
+
+	/**
+	 * 게시물 정보 업데이트하는 메서드
+	 * 
+	 * @param vo
+	 * @throws SQLException
+	 */
+	public void updatePosting(String folderName, PostVO pvo) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+		try {
+			con = getConnection();
+
+			pstmt = con.prepareStatement("update board_recommend set title=?,content=? where post_no=?");
+			pstmt.setString(1, pvo.getTitle());
+			pstmt.setString(2, pvo.getContent());
+			pstmt.setString(3, pvo.getPostNo());
+			pstmt.executeUpdate();
+			pstmt.close();
+
+		}finally {
+			closeAll(pstmt, con);
+		}
+	}
+
+	public String getFolderNameByPostNo(String postNo) throws SQLException {
+		String folderName = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+			String sql = "select distinct folder_name from bookmark_board where post_no=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, postNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				folderName = rs.getString(1);
+			}
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+
+		return folderName;
+	}
+	
+	
 }
