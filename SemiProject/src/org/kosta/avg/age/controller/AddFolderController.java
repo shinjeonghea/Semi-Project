@@ -36,7 +36,7 @@ public class AddFolderController implements Controller{
 			System.out.println(channelList.get(k));
 		}
 		session.setAttribute("clist", channelList);
-		return "index.jsp";
+		return "redirect:index.jsp";
 	}
 
 }

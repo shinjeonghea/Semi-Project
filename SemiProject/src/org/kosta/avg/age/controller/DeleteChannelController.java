@@ -20,22 +20,27 @@ public class DeleteChannelController implements Controller{
 				request.getMethod().equals("POST")==false){
 			return "redirect:index.jsp";
 		}
-		
-		ArrayList<BookMarkChannelVO> channelList = new ArrayList<BookMarkChannelVO>();
+		// 채널에 대해 받아온 정보
 		MemberVO mvo = (MemberVO) session.getAttribute("mvo");
 		String id = mvo.getId();
-		// 폴더 넘버도 받아와야 할 것 같음
-		String delchannelName = request.getParameter("delchannelName");
+		String folderNo = request.getParameter("folderNo");
+		String channelName = request.getParameter("channelName");
+		System.out.println(id);	
+		System.out.println(folderNo);		
+		System.out.println(channelName);
+		
+		// DB애서 채널에 대한 정보 지우는 메서드 실행
+		BookMarkDAO.getInstance().deleteChannelMember(id, folderNo, channelName);
 		ArrayList<BookMarkFolderVO> folderList = BookMarkDAO.getInstance().getFolderNameByMemberId(id);
-		
-		BookMarkDAO.getInstance().deleteChannelMember(id, delchannelName);
-		
-		for(int i=0;i<folderList.size();i++) {
-			channelList.addAll(BookMarkDAO.getInstance().getChannelByMemberId(folderList.get(i).getFolderNo()));
-		}
+		ArrayList<BookMarkChannelVO> channelList = new ArrayList<BookMarkChannelVO>();
+
 		for(int k=0;k<channelList.size();k++) {
 			System.out.println(channelList.get(k));
 		}
+		for(int i=0;i<folderList.size();i++) {
+			channelList.addAll(BookMarkDAO.getInstance().getChannelByMemberId(folderList.get(i).getFolderNo()));
+		}
+		session.setAttribute("flist", folderList);
 		session.setAttribute("clist", channelList);
 		return "index.jsp";
 	}

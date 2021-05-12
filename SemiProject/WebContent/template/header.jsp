@@ -27,6 +27,13 @@
 		let specs = "width=450,height=600";
 		var ret = window.open(url, name, specs);
 	}
+	/*
+	function delChannel(folderName,channelName){
+		let form = document.delChannel1;
+		form.innerHTML="<input name='folderName' value='"+folderName+"'>";
+		form.delChannel1.submit();
+	}
+	*/
 </script>
 <!-- Sidebar -->
 <ul
@@ -70,7 +77,7 @@
 
 		<li class="nav-item">
 			<form method="post"
-				action="${pageContext.request.contextPath}/DeleteFolderController.do?folderName=요리">
+				action="${pageContext.request.contextPath}/DeleteFolderController.do">
 				<input type="text" name="delfolderName" placeholder="폴더이름" size="10">
 				<input type="submit" value="폴더삭제" size="5">
 			</form>
@@ -149,12 +156,16 @@
 					<div class="bg-white py-2 collapse-inner rounded">
 						<c:forEach var="channellist" items="${sessionScope.clist}">
 							<c:if test="${folderlist.folderName eq channellist.folderName}">
-								<form method="post"
-									action="${pageContext.request.contextPath}/DeleteChannelController.do?">
+							
+							
+								<form method="post"	action="${pageContext.request.contextPath}/DeleteChannelController.do">
 									<a class="collapse-item"><input type="checkbox"
 										name="${folderlist.folderName}">${channellist.channelName}
-										<input type="submit" value="x"> </a>
+										<input type="hidden" name="folderNo" value="${folderlist.folderNo}">
+										<input type="hidden" name="channelName" value="${channellist.channelName}">
+										<input type="submit" value="x"> </a> 
 								</form>
+
 
 							</c:if>
 						</c:forEach>

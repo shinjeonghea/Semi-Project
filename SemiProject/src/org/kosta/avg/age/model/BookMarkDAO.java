@@ -168,14 +168,14 @@ public class BookMarkDAO {
 
  
 	//채널 삭제
-	public void deleteChannelMember(String id,String channelName) throws SQLException {
+	public void deleteChannelMember(String id,String folderNo, String channelName) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
 			con=dataSource.getConnection();
-			String sql="DELETE FROM channel_member WHERE id=? and channel_name=?";
+			String sql="DELETE FROM channel_member WHERE folder_no=? and channel_name=?";
 			pstmt=con.prepareStatement(sql);
-			pstmt.setString(1, id);
+			pstmt.setString(1, folderNo);
 			pstmt.setString(2, channelName);
 			pstmt.executeUpdate();
 		} finally {

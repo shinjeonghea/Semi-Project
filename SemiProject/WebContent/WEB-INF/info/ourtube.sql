@@ -9,7 +9,9 @@ drop sequence bookmark_board_seq;
 drop sequence bookmark_folder_seq;
 drop sequence channel_member_seq;
 
-
+DELETE FROM channel_member where folder_no='6' and channel_name='MBCNEWS';
+DELETE FROM bookmark_folder where id='kgs' and folder_name='근력운동';
+DELETE FROM bookmark_folder where id='kgs' and folder_name='공부용 음악';
 ------------------------------------------------------------------------------------------------
 --각 테이블 select로 확인--------------------------------------------
 select * from channel_member;
