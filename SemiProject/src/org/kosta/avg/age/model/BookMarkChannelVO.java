@@ -1,3 +1,4 @@
+
 package org.kosta.avg.age.model;
 
 public class BookMarkChannelVO {
@@ -40,3 +41,4 @@ public class BookMarkChannelVO {
 	}
 	
 }
+

@@ -194,4 +194,89 @@ public class BookMarkDAO {
 			closeAll(pstmt, con);
 		}
 	}
+	
+
+	/**
+	 * 게시글에 연결된 폴더를 내 폴더로 가져온다!
+	 * 
+	 * @param id는 session에 담아져있는 mvo의 id임.
+	 * @return
+	 */
+	public void receiveChannelFromPost(String id, String postNo) throws SQLException {
+		ArrayList<BookMarkChannelVO> list = new ArrayList<BookMarkChannelVO>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = dataSource.getConnection();
+			// 수동 커밋 모드로 변경
+			con.setAutoCommit(false);
+			// 게시판에서 글쓴이가 올린 즐겨찾기 폴더 이름과 채널명, 채널 url을 가져옴.
+			StringBuilder sql1 = new StringBuilder("select bb.folder_name, bb.channel_name, bb.channel_url ");
+			sql1.append("from BOOKMARK_BOARD bb, BOARD_RECOMMEND br ");
+			sql1.append("where br.post_no=bb.post_no and bb.post_no=?");
+			pstmt = con.prepareStatement(sql1.toString());
+			pstmt.setString(1, postNo);
+			rs = pstmt.executeQuery();
+			// ArrayList<BookMarkChannelVO>에 객체들 add
+			while (rs.next()) {
+				BookMarkChannelVO bvo = new BookMarkChannelVO();
+				bvo.setFolderName(rs.getString(1));
+				bvo.setChannelName(rs.getString(2));
+				bvo.setChannelURL(rs.getString(3));
+				list.add(bvo);
+			}
+			rs.close();
+			pstmt.close();
+
+			// 내가 가지고 있는 즐겨찾기 폴더 이름이 있는지 확인 -> 있으면 1, 없으면 0
+			sql1 = new StringBuilder();
+			sql1.append("select count(*) from BOOKMARK_FOLDER where id=? and folder_name=?");
+			pstmt = con.prepareStatement(sql1.toString());
+			pstmt.setString(1, id);
+			pstmt.setString(2, list.get(list.size()-1).getFolderName());
+			rs = pstmt.executeQuery();
+
+			boolean flag = false;
+			if (rs.next()) {
+				if (rs.getInt(1) == 1) { // 폴더 존재함.
+					flag = true;
+				}
+			}
+			rs.close();
+
+			if (!flag) { // 폴더 존재하지 않는 경우
+				// 위 내용을 토대로 즐겨찾기 폴더를 생성함.
+				StringBuilder sql2 = new StringBuilder("insert into bookmark_folder(folder_no, id, folder_name) ");
+				sql2.append("values(bookmark_folder_seq.nextval, ?, ?)");
+				pstmt = con.prepareStatement(sql2.toString());
+				pstmt.setString(1, id);
+				pstmt.setString(2, list.get(list.size()-1).getFolderName());
+				pstmt.executeUpdate();
+				pstmt.close();
+			}
+
+			for (int i = 0; i < list.size(); i++) {
+			StringBuilder sql3 = new StringBuilder(
+					"insert into channel_member(no, folder_no, channel_name, channel_url) ");
+			sql3.append(
+					"values(channel_member_seq.nextval, (select folder_no from bookmark_folder where id=? and folder_name=?), ?, ?)");
+			pstmt = con.prepareStatement(sql3.toString());
+				pstmt.setString(1, id);
+				pstmt.setString(2, list.get(i).getFolderName());
+				pstmt.setString(3, list.get(i).getChannelName());
+				pstmt.setString(4, list.get(i).getChannelURL());
+				pstmt.executeUpdate();
+			}
+			con.commit();
+		} catch (Exception e) {
+			con.rollback();
+			System.out.println("게시물 삭제 작업 중, 문제 발생하여 rollback");
+			throw e;
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+	}
+
 }
+	

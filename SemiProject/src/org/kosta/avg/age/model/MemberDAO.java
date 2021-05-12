@@ -32,6 +32,7 @@ public class MemberDAO {
 			con.close();
 	}
 	
+
 	//로그인
 	public MemberVO login(String id, String password) throws SQLException {
 		MemberVO mvo = null;
