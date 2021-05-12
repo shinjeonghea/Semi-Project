@@ -55,7 +55,18 @@ function callback(){
 			document.getElementById("userId").focus();
 		}else if(xhr.responseText==1){
 			alert("사용가능한 아이디입니다.");
+			document.getElementById("checked_id").value="1";
 		}
+	}
+}
+
+function CheckIdfunction(form){
+	if(form.checked_id.value=="0"){
+		alert("아이디 중복확인을 해주세요.");
+		//form.action="join.jsp";
+		//form.method="post";
+		//form.submit();
+		return false;
 	}
 }
 </script>
@@ -78,26 +89,26 @@ function callback(){
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">OurTube</h1>
                                     </div>
-                                    <form class="user" method="post" action="${pageContext.request.contextPath}/JoinController.do">
+                                    <form name="join" class="user" method="post" action="${pageContext.request.contextPath}/JoinController.do" onsubmit= "return CheckIdfunction(join);">
                               			<div class="form-group" style="display:flex;">
                               			
                                             <input type="text" class="form-control form-control-user"
                                                 id="userId" aria-describedby="emailHelp"
                                                 placeholder="id" name="id" autofocus>&nbsp;&nbsp;&nbsp;
-                                                
+                                            <input type="hidden" id="checked_id" name="checked_id" value="0">
                                         <button style="font-size:13px; border-radius: 2rem; color: #fff; background-color: #4e73df; border-color: #4e73df; width:15%" 
                                         type="button"  onclick="joinCheckFunction()">중복확인</button>
                                         </div>
                                         
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password" name="password">
+                                                id="password" placeholder="Password" name="password" required="required">
                                         </div>
                                          <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Nickname" name="nickname">
+                                                id="nickname" placeholder="Nickname" name="nickname" required="required">
                                         </div>
-                                        <input type="submit" class="btn btn-primary btn-user btn-block"  value="Sign up">
+                                        <input type="submit" class="btn btn-primary btn-user btn-block"  value="Sign up" >
                                       
                                     </form>
                                 
