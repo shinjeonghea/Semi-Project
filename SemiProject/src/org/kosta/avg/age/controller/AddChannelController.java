@@ -17,7 +17,6 @@ public class AddChannelController implements Controller{
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("111111");
 		HttpSession session=request.getSession(false);
 		if(session==null||session.getAttribute("mvo")==null||
 				request.getMethod().equals("POST")==false){

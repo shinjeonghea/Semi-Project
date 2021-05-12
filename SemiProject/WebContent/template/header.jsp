@@ -1,3 +1,6 @@
+<%@page import="org.kosta.avg.age.model.BookMarkChannelVO"%>
+<%@page import="org.kosta.avg.age.model.BookMarkFolderVO"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -20,21 +23,61 @@
 				chbx[i].checked = false;
 			}
 	}
+	
+	function addFolder(form) {
+		let addfolderName= document.getElementById("addfolderName");
+		
+		var arr=new Array();
+		<c:forEach items="${sessionScope.flist}" var="folderNameList">
+			arr.push("${folderNameList.folderName}");
+		</c:forEach>
 
+ 		
+  		for(let i=0;i<arr.length;i++){
+			if(addfolderName.value==arr[i]){
+				alert(addfolderName.value+" 폴더가 존재합니다.");
+				document.getElementById("addfolderName").value=null;
+				return false;
+				
+			}
+		} 
+  		alert(addfolderName.value+" 폴더가 추가되었습니다.");
+	}
+	
+	function delFolder() {
+		let delfolderName= document.getElementById("delfolderName");
+		
+		var arr=new Array();
+		<c:forEach items="${sessionScope.flist}" var="folderNameList">
+			arr.push("${folderNameList.folderName}");
+		</c:forEach>
+
+ 		let j=0; 
+  		for(let i=0;i<arr.length;i++){
+			if(delfolderName.value==arr[i]){
+				alert(delfolderName.value+" 폴더가 삭제되었습니다.");
+				j+=1;
+			}
+		} 
+ 		if(j==0)
+			alert(delfolderName.value+" 폴더가 없습니다.");
+ 
+	}
+	
 	function addChannel() {
 		let url = "${pageContext.request.contextPath}/member/add-channel.jsp";
 		let name = "addChannel";
 		let specs = "width=450,height=600";
 		var ret = window.open(url, name, specs);
 	}
-	/*
+	
 	function delChannel(folderName,channelName){
 		let form = document.delChannel1;
 		form.innerHTML="<input name='folderName' value='"+folderName+"'>";
 		form.delChannel1.submit();
 	}
-	*/
 </script>
+
 <!-- Sidebar -->
 <ul
 	class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
@@ -69,17 +112,17 @@
 	<div>
 		<li class="nav-item">
 			<form method="post"
-				action="${pageContext.request.contextPath}/AddFolderController.do">
-				<input type="text" name="addfolderName" placeholder="폴더이름" size="10">
-				<input type="submit" value="폴더추가" size="5">
+				action="${pageContext.request.contextPath}/AddFolderController.do" onsubmit="return addFolder();">
+				<input type="text" name="addfolderName" placeholder="폴더이름" size="10" id="addfolderName" required="required">
+				<input type="submit" value="폴더추가" size="5" >
 			</form>
 		</li>
 
 		<li class="nav-item">
-			<form method="post"
-				action="${pageContext.request.contextPath}/DeleteFolderController.do">
-				<input type="text" name="delfolderName" placeholder="폴더이름" size="10">
-				<input type="submit" value="폴더삭제" size="5">
+			<form method="post" 
+				action="${pageContext.request.contextPath}/DeleteFolderController.do" onsubmit="delFolder();">
+				<input type="text" name="delfolderName" placeholder="폴더이름" size="10" id="delfolderName" required="required">
+				<input type="submit" value="폴더삭제" size="5" >
 			</form>
 		</li>
 
