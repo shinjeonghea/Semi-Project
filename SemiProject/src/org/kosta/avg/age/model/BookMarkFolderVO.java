@@ -35,6 +35,4 @@ public class BookMarkFolderVO {
 		return "BookMarkFolderVO [folderNo=" + folderNo + ", folderName=" + folderName + "]";
 	}
 
-	
-	
 }

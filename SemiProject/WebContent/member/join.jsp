@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,9 +20,45 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-     <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
+     <link href="${pageContext.request.contextPath}/css/sb-admin-2.css" rel="stylesheet">
 
 </head>
+<script type="text/javascript">
+let xhr;
+function joinCheckFunction() {
+	//사용자 입력한 id를 받아온다 
+	let mid=document.getElementById("userId").value;
+	if(mid==""){
+		alert("아이디를 입력하세요!");
+		return;//함수 실행을 중단한다 
+	}
+	
+	xhr=new XMLHttpRequest();//Ajax 통신을 위한 자바스크립트 객체 
+	//alert(xhr);
+	//XMLHttpRequest의 속성에 callback 함수를 바인딩
+	//readystate가 변화될 때 callback 함수가 실행 
+	//서버가 응답할 때 callback 함수를 실행하기 위한 코드이다 
+	xhr.onreadystatechange=callback; 
+	//서버로 요청 
+	xhr.open("GET","${pageContext.request.contextPath}/JoinCheckController.do?id="+mid);
+	xhr.send(null); //post 방식일때 form data 명시 
+}
+function callback(){
+	//console.log(xhr.readyState);
+	// readyState 가 4 : 서버의 응답 정보를 받은 상태 
+	// status 가 200 : 정상 수행 
+	if(xhr.readyState==4&&xhr.status==200){
+		//xhr.responseText : 서버의 응답데이터를 저장하는 변수 
+		if(xhr.responseText==0){
+			alert("중복된 아이디입니다.\n다른 아이디로 회원가입하십시오");
+			document.getElementById("userId").value=null;
+			document.getElementById("userId").focus();
+		}else if(xhr.responseText==1){
+			alert("사용가능한 아이디입니다.");
+		}
+	}
+}
+</script>
 
 <body class="bg-gradient-info">
 
@@ -40,14 +76,19 @@
                          
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome to join us</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">OurTube</h1>
                                     </div>
-                                    <form class="user" method="post" action="${pageContext.request.contextPath}/LoginController.do">
-                                        <div class="form-group">
+                                    <form class="user" method="post" action="${pageContext.request.contextPath}/JoinController.do">
+                              			<div class="form-group" style="display:flex;">
+                              			
                                             <input type="text" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="id" name="id">
+                                                id="userId" aria-describedby="emailHelp"
+                                                placeholder="id" name="id" autofocus>&nbsp;&nbsp;&nbsp;
+                                                
+                                        <button style="font-size:13px; border-radius: 2rem; color: #fff; background-color: #4e73df; border-color: #4e73df; width:15%" 
+                                        type="button"  onclick="joinCheckFunction()">중복확인</button>
                                         </div>
+                                        
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="Password" name="password">
@@ -56,13 +97,7 @@
                                             <input type="text" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="Nickname" name="nickname">
                                         </div>
-                                        
-                                        
-                                        
-                                       
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                            Sign Up
-                                        </a>
+                                        <input type="submit" class="btn btn-primary btn-user btn-block"  value="Sign up">
                                       
                                     </form>
                                 
