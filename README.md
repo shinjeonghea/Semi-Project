@@ -6,7 +6,7 @@
 
 - **팀명** : avg.age.26
 
-- **팀 구성 **
+- **팀 구성**
   - 고보승 - [github](https://github.com/kobos0503)
   - 김수권 - [github](https://github.com/sukuon2000)
   - 백경성 - [github](https://github.com/kyoungsungBack)
