@@ -13,9 +13,9 @@ public class JoinCheckController implements Controller {
 		int check = MemberDAO.getInstance().joinIdCheck(userID);
 		System.out.println("여기까지 됨");
 		if(check==0) {
-			request.setAttribute("responsebody", 0);
+			request.setAttribute("checknum", 0);
 		}else if(check==1) {
-			request.setAttribute("responsebody", 1);
+			request.setAttribute("checknum", 1);
 		}
 		return "AjaxView";
 	}

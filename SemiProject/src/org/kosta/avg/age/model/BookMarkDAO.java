@@ -34,7 +34,7 @@ public class BookMarkDAO {
 		if (con != null)
 			con.close();
 	}
-
+	//폴더 들고오기
 	public ArrayList<BookMarkFolderVO> getFolderNameByMemberId(String id) throws SQLException {
 		ArrayList<BookMarkFolderVO> list = new ArrayList<BookMarkFolderVO>();
 		Connection con = null;
@@ -57,7 +57,7 @@ public class BookMarkDAO {
 		}
 		return list;
 	}
-
+	//폴더 넘버 통해서 채널 들고오기
 	public ArrayList<BookMarkChannelVO> getChannelByMemberId(Integer i) throws SQLException {
 		ArrayList<BookMarkChannelVO> list = new ArrayList<BookMarkChannelVO>();
 		Connection con = null;

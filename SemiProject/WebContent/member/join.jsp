@@ -20,14 +20,14 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-     <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
+     <link href="${pageContext.request.contextPath}/css/sb-admin-2.css" rel="stylesheet">
 
 </head>
 <script type="text/javascript">
 let xhr;
 function joinCheckFunction() {
 	//사용자 입력한 id를 받아온다 
-	let mid=document.getElementById("id").value;
+	let mid=document.getElementById("userId").value;
 	if(mid==""){
 		alert("아이디를 입력하세요!");
 		return;//함수 실행을 중단한다 
@@ -50,7 +50,9 @@ function callback(){
 	if(xhr.readyState==4&&xhr.status==200){
 		//xhr.responseText : 서버의 응답데이터를 저장하는 변수 
 		if(xhr.responseText==0){
-			alert("중복된 아이디입니다.");
+			alert("중복된 아이디입니다.\n다른 아이디로 회원가입하십시오");
+			document.getElementById("userId").value=null;
+			document.getElementById("userId").focus();
 		}else if(xhr.responseText==1){
 			alert("사용가능한 아이디입니다.");
 		}
@@ -77,12 +79,14 @@ function callback(){
                                         <h1 class="h4 text-gray-900 mb-4">OurTube</h1>
                                     </div>
                                     <form class="user" method="post" action="${pageContext.request.contextPath}/JoinController.do">
-                              
-                                        <div class="form-group">
+                              			<div class="form-group" style="display:flex;">
+                              			
                                             <input type="text" class="form-control form-control-user"
-                                                id="id" aria-describedby="emailHelp"
-                                                placeholder="id" name="id" >
-                                        <button type="button" onclick="joinCheckFunction()">중복체크</button>
+                                                id="userId" aria-describedby="emailHelp"
+                                                placeholder="id" name="id" autofocus>&nbsp;&nbsp;&nbsp;
+                                                
+                                        <button style="font-size:13px; border-radius: 2rem; color: #fff; background-color: #4e73df; border-color: #4e73df; width:15%" 
+                                        type="button"  onclick="joinCheckFunction()">중복확인</button>
                                         </div>
                                         
                                         <div class="form-group">

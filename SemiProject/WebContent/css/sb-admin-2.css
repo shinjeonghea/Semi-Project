@@ -1841,7 +1841,6 @@ pre code {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;
@@ -2360,6 +2359,7 @@ fieldset:disabled a.btn {
   color: #fff;
   background-color: #4e73df;
   border-color: #4e73df;
+
 }
 
 .btn-primary:hover {
@@ -10392,7 +10392,7 @@ a:focus {
   color: #3a3b45;
   text-decoration: none;
   border-radius: 0.35rem;
-  white-space: nowrap;
+  margin-left:auto;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item:hover,

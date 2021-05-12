@@ -89,7 +89,8 @@ public class MemberDAO {
 			pstmt=con.prepareStatement(sql);
 			pstmt.setString(1, userID);
 			rs=pstmt.executeQuery();
-			if(rs.next()) {
+			rs.next();
+			if(rs.getInt(1)>0) {
 				return 0;//이미 존재
 			}else {
 				return 1;//사용가능

@@ -14,6 +14,23 @@
       }
    }
    
+   function addChannel() {
+		let url = "${pageContext.request.contextPath}/member/add-channel.jsp";
+		let name = "addChannel";
+		let specs = "width=450,height=600";
+		var ret = window.open(url, name, specs);
+	}
+	
+	  function selectAll(selectAll)  {
+		   const checkboxes 
+		        = document.getElementsByName("${folderlist.folderName}");
+		   
+		   checkboxes.forEach((checkbox) => {
+		     checkbox.checked = selectAll.checked;
+		   })
+		 }
+	
+	
 </script>
 
 <!-- Sidebar -->
@@ -45,25 +62,45 @@
    
    <%-- 즐겨찾기 폴더 추가 / 채널 추가 버튼 영역 --%>
    <%-- href 속성값으로 controller 명시하기! --%>
+   
    <hr class="sidebar-divider">
-   <div>
-      <li class="nav-item">
-         <a class="nav-link" href="#"><span>즐겨찾기 폴더 추가</span>
-         </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="#"><span>채널 추가</span>
-         </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="#"><span>즐겨찾기 폴더 삭제</span>
-         </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" href="#"><span>채널 삭제</span>
-         </a>
-      </li>
-   </div>
+   <c:choose>
+   <c:when test="${sessionScope.mvo!=null}">
+	<li class="nav-item">
+  	<%-- data-target에 id값 넣기! --%> <a class="nav-link collapsed" href="#"
+		data-toggle="collapse" data-target="#hello" aria-expanded="true"
+		aria-controls="#hello"> <i class="fas fa-fw fa-wrench"></i> <span>
+				즐겨찾기폴더 </a> <%-- id값을 a태그의 data-target으로 넣어주기! --%>
+
+		<div id="hello" class="collapse"
+			aria-labelledby="hello${status.index}"
+			data-parent="#accordionSidebar" >
+				<form method="post"
+				action="${pageContext.request.contextPath}/AddFolderController.do">
+				<input type="text" name="addfolderName" placeholder="폴더이름" size="10"  style="display:flex;">
+				<input type="submit" value="폴더추가" class="btn btn-primary btn-sm">
+			</form>
+			<form method="post"
+				action="${pageContext.request.contextPath}/DeleteFolderController.do?folderName=요리">
+				<input type="text" name="delfolderName" placeholder="폴더이름" size="10">
+				<input type="submit" value="폴더삭제" class="btn btn-primary btn-sm">
+			</form>
+		</div>
+
+	</li>
+	<li class="nav-item"><a class="nav-link collapsed" href="#"
+		data-toggle="collapse" data-target="#collaps1" aria-expanded="true"
+		aria-controls="collaps1"> <i class="fas fa-fw fa-wrench"></i> <span>채널관리</span>
+	</a>
+		<div id="collaps1" class="collapse" aria-labelledby="headingUtilities"
+			data-parent="#accordionSidebar">
+			
+			
+				<form>
+					<input type="button"  class="btn btn-primary btn-sm" value="채널추가" onclick="addChannel()">
+				</form>
+		
+		</div></li>
    
    <!-- Divider -->
    <hr class="sidebar-divider">
@@ -74,27 +111,32 @@
    <!-- Nav Item - Utilities Collapse Menu -->
    <!-- 폴더 들고오는 foreach문 -->
    <form name="radioGroup">
-   <input type='reset' class="btn btn btn-outline-secondary btn-sm btn-primary text-white"  value="초기화">
+  <input type='reset' class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="margin-left:10px" value="초기화">
    <c:forEach var="folderlist" items="${sessionScope.flist}" varStatus="status">
    <li class="nav-item">
-      <div style="display:inline-block">
-      <input type="radio" name="${folderlist.folderName}" onclick="checkAll(this.name)">
-      </div>
       <%-- data-target에 id값 넣기! --%>
       <div style="display:inline-block">
+  
+      <div style="vertical-align:middle">
+     
       <a class="nav-link collapsed" href="#"
       data-toggle="collapse" data-target="#hello${status.index}" aria-expanded="true"
       aria-controls="#hello${status.index}"><span>${folderlist.folderName}</span>
    </a> 
+   </div>
    </div>
    <%-- id값을 a태그의 data-target으로 넣어주기! --%>
    
       <div id="hello${status.index}" class="collapse" aria-labelledby="hello${status.index}"
          data-parent="#accordionSidebar">
          <div class="bg-white py-2 collapse-inner rounded">
+		  <a class="collapse-item" name="${folderlist.folderName}" href="javascript:void(0);" onClick="checkAll(this.name);" attr-a="onClick:attr-a">전체선택</a>
          <c:forEach var="channellist" items="${sessionScope.clist}" >
    		 <c:if test="${folderlist.folderName eq channellist.folderName}">
-            <a class="collapse-item" ><input type="checkbox" name="${folderlist.folderName}"> ${channellist.channelName}</a>
+   		
+            <a class="collapse-item" ><input type="checkbox" name="${folderlist.folderName}">&nbsp; ${channellist.channelName}
+            <button type="button" style="border-radius: 1rem; background-color: #ffffff;border:0;coutline:0;color:#4e73df; font-weight:bold;">x</button>
+            </a>
          </c:if>
          </c:forEach>
          </div>
@@ -102,46 +144,10 @@
    </li>
    </c:forEach>
    </form>
-   
-
-   <%-- 
-   <!-- Divider -->
-   <hr class="sidebar-divider">
-
-   <!-- Heading -->
-   <div class="sidebar-heading">Addons</div>
-
-   <!-- Nav Item - Pages Collapse Menu -->
-   
-   <li class="nav-item"><a class="nav-link collapsed" href="#"
-      data-toggle="collapse" data-target="#collapsePages"
-      aria-expanded="true" aria-controls="collapsePages"> <i
-         class="fas fa-fw fa-folder"></i> <span>Pages</span>
-   </a>
-      <div id="collapsePages" class="collapse"
-         aria-labelledby="headingPages" data-parent="#accordionSidebar">
-         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a> <a
-               class="collapse-item" href="register.html">Register</a> <a
-               class="collapse-item" href="forgot-password.html">Forgot
-               Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a> <a
-               class="collapse-item" href="blank.html">Blank Page</a>
-         </div>
-      </div>
-   </li>
-    --%>
-    
-   <%-- 하단 < 버튼
-   <hr class="sidebar-divider d-none d-md-block">
-
-   <!-- Sidebar Toggler (Sidebar) -->
-   <div class="text-center d-none d-md-inline">
-      <button class="rounded-circle border-0" id="sidebarToggle"></button>
-   </div>
-    --%>
+   </c:when>
+   <c:otherwise>
+   	<div class="sidebar-heading">로그인 하셔야 <br>이용하실 수 있는 메뉴입니다.</div>
+   </c:otherwise>
+   </c:choose>
     
 </ul>
