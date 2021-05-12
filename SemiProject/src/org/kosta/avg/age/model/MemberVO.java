@@ -6,7 +6,7 @@ public class MemberVO {
 	private String id;
 	private String password;
 	private String nick;
-	private ArrayList<BookMarkVO> list;
+	private ArrayList<BookMarkChannelVO> list;
 	public MemberVO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -35,10 +35,10 @@ public class MemberVO {
 	public void setNick(String nick) {
 		this.nick = nick;
 	}
-	public ArrayList<BookMarkVO> getList() {
+	public ArrayList<BookMarkChannelVO> getList() {
 		return list;
 	}
-	public void setList(ArrayList<BookMarkVO> list) {
+	public void setList(ArrayList<BookMarkChannelVO> list) {
 		this.list = list;
 	}
 	@Override
