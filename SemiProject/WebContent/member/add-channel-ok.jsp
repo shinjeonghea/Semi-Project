@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 function close1(){
-	//alert("Asdfasdf");
 	window.opener.location.reload();
 	window.close();
 }

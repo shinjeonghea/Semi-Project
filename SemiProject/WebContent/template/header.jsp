@@ -62,11 +62,6 @@
 		var ret = window.open(url, name, specs);
 	}
 	
-	function delChannel(folderName,channelName){
-		let form = document.delChannel1;
-		form.innerHTML="<input name='folderName' value='"+folderName+"'>";
-		form.delChannel1.submit();
-	}
 	function selectAll(selectAll)  {
 		   const checkboxes 
 		        = document.getElementsByName("${folderlist.folderName}");

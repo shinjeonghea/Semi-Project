@@ -28,7 +28,6 @@ public class AddChannelController implements Controller{
 		String youtube_str = request.getParameter("checkChannel");
 		String addChannelName=substringBetween(youtube_str, "title=", ",");
 		String channelURL=substringBetween(youtube_str, "channelURL=", ",");
-		//System.out.println("ㅁㅁㅁㅁㅁㅁ"+title+" " +channelURL);
 		System.out.println(id);
 		System.out.println(addfolderName);
 		System.out.println(addChannelName);
@@ -43,7 +42,7 @@ public class AddChannelController implements Controller{
 		}
 		
 		for(int k=0;k<channelList.size();k++) {
-			System.out.println(channelList.get(k));
+			channelList.get(k);
 		}
 		
 		session.setAttribute("flist", folderList);

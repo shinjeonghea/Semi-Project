@@ -15,12 +15,13 @@
 		if(checked[0]==null){
 			alert("채널을 선택해주세요~");
 		}else{
-		alert(checked[0].value);
-		let select = document.getElementById("selectFolder");
-		let selectFolder = select.options[select.selectedIndex].value;
-		alert(selectFolder);
-		document.addChannel1.submit();
-
+			let select = document.getElementById("selectFolder");
+			let selectFolder = select.options[select.selectedIndex].value;		
+			if(selectFolder==""){
+				alert("폴더를 선택해주세요");
+			}else{
+				document.addChannel1.submit();
+			}
 		}
 	}
 </script>
@@ -30,7 +31,7 @@
 
    <div class="container-fluid" align="center">
       <form action="${pageContext.request.contextPath}/YoutubeSearchController.do">
-         <input type="text" id="search" name="search" placeholder="채널명을 입력해주세요">
+         <input type="text" id="search" name="search" placeholder="채널명을 입력해주세요" required="required">
          <input type="submit" value="검색하기">
       </form>
       <br>
