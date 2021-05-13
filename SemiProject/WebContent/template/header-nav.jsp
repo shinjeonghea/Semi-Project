@@ -11,9 +11,7 @@
 	//유튜브 팝업창 띄우면서 검색하기
 	function youtubeSearch(){
 		//선택된 체크박스 값 가져오기		
-		let checkedItem = document.querySelectorAll("input[type='checkbox']:checked");
-		alert(checkedItem.item());
-		return;
+		const checkedItem = document.querySelectorAll('input[type="checkbox"]:checked');
 		let checkedValue = '';
 		for(let i=0;i<checkedItem.length;i++){
 			//마지막 채널에는 OR 붙이기
@@ -29,10 +27,18 @@
 		let searchKeyword = document.getElementById("searchKeyword").value;		
 		
 		//팝업 띄우면서 검색하기
-		var url = "https://www.youtube.com/results?search_query="+searchKeyword + "AND" + "(" + checkedValue + ")";
-        var name = "";
-        var option = "width = 1200, height = 800, top = 100, left = 200, location = no"
-        window.open(url, name, option);
+		if(searchKeyword==""||searchKeyword==null){
+			var url = "https://www.youtube.com/results?search_query="+ checkedValue ;
+	        var name = "";
+	        var option = "width = 1200, height = 800, top = 100, left = 200, location = no"
+	        window.open(url, name, option);
+		}else{
+			var url = "https://www.youtube.com/results?search_query="+searchKeyword + "AND" + "(" + checkedValue + ")";
+	        var name = "";
+	        var option = "width = 1200, height = 800, top = 100, left = 200, location = no"
+	        window.open(url, name, option);
+		}
+		
 
 	}
 </script>
