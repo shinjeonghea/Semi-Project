@@ -34,24 +34,6 @@ public class BookMarkDAO {
 		if (con != null)
 			con.close();
 	}
- 
- 
-	//채널 삭제
-	public void deleteChannelMember(String id,String folderNo, String channelName) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con=dataSource.getConnection();
-			String sql="DELETE FROM channel_member WHERE folder_no=? and channel_name=?";
-			pstmt=con.prepareStatement(sql);
-			pstmt.setString(1, folderNo);
-			pstmt.setString(2, channelName);
-			pstmt.executeUpdate();
-		} finally {
-			closeAll(pstmt, con);
-		}
-	}
-	
 	//폴더 들고오기
 	public ArrayList<BookMarkFolderVO> getFolderNameByMemberId(String id) throws SQLException {
 		ArrayList<BookMarkFolderVO> list = new ArrayList<BookMarkFolderVO>();
@@ -197,6 +179,23 @@ public class BookMarkDAO {
 		}
 	}
 
+ 
+	//채널 삭제
+	public void deleteChannelMember(String channelName) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con=dataSource.getConnection();
+			String sql="DELETE FROM channel_member WHERE channel_name=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, channelName);
+			pstmt.executeUpdate();
+		} finally {
+			closeAll(pstmt, con);
+		}
+	}
+	
+
 	/**
 	 * 게시글에 연결된 폴더를 내 폴더로 가져온다!
 	 * 
@@ -280,4 +279,4 @@ public class BookMarkDAO {
 	}
 
 }
-
+	
