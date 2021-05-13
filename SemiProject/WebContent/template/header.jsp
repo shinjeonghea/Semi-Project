@@ -13,6 +13,17 @@
 	      } 
 	   }
 	}
+	//체크박스 전체 선택 2차 수정
+	function selectAll(checkname){
+		   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		   for(var i=0;i<checkboxes.length;i++){
+			   if(checkname==checkboxes[i].value){
+				   checkboxes[i].checked = true;
+			   }else{
+				   checkboxes[i].checked = false;
+			   }
+		   }
+		 }
 	function addFolder(form) {
 		let addfolderName= document.getElementById("addfolderName");
 		
@@ -60,15 +71,7 @@
 		var ret = window.open(url, name, specs);
 	}
 	
-	
-	function selectAll()  {
-		   const checkboxes 
-		        = document.getElementsByName("${folderlist.folderName}");
-		   
-		   checkboxes.forEach((checkbox) => {
-		     checkbox.checked = true;
-		   })
-		 }
+
 </script>
 <!-- Sidebar -->
 <ul
@@ -147,8 +150,9 @@
    
    <!-- Nav Item - Utilities Collapse Menu -->
    <!-- 폴더 들고오는 foreach문 -->
-   <form name="radioGroup">
-  <input type='reset' class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="margin-left:10px" value="초기화">
+   <div class="radioGroup">
+   <input type='reset'class="btn btn btn-outline-secondary btn-sm btn-primary text-white"
+					style="margin-left: 10px" value="초기화">
    <c:forEach var="folderlist" items="${sessionScope.flist}" varStatus="status">
    <li class="nav-item">
       <%-- data-target에 id값 넣기! --%>
@@ -168,13 +172,13 @@
       <div id="hello${status.index}" class="collapse" aria-labelledby="hello${status.index}"
          data-parent="#accordionSidebar">
          <div class="bg-white py-2 collapse-inner rounded">
-		 <a class="collapse-item" name="${folderlist.folderName}" href="javascript:void(0);" onClick="checkAll(this.name);" attr-a="onClick:attr-a">전체선택</a>
+		 <a class="collapse-item" name="${folderlist.folderName}" href="javascript:void(0);" onClick="selectAll(this.name);" attr-a="onClick:attr-a">전체선택</a>
          <%-- channel보여주기--%>
          <c:forEach var="channellist" items="${sessionScope.clist}" >
    		 <c:if test="${folderlist.folderName eq channellist.folderName}">
            <form method="post"	action="${pageContext.request.contextPath}/DeleteChannelController.do">
 				<a class="collapse-item"><input type="checkbox"
-					name="${folderlist.folderName}">${channellist.channelName}
+					name="${folderlist.folderName}" value="${folderlist.folderName}">${channellist.channelName}
 				<input type="hidden" name="folderNo" value="${folderlist.folderNo}">
 				<input type="hidden" name="channelName" value="${channellist.channelName}">
 				<input type="submit" style="border-radius: 1rem; background-color: #ffffff;border:0;coutline:0;color:#4e73df; font-weight:bold;"  value="x"> </a> 
@@ -185,7 +189,7 @@
       </div>
    </li>
    </c:forEach>
-   </form>
+ 	</div>
    </c:when>
    <c:otherwise>
    	<div class="sidebar-heading">로그인 하셔야 <br>이용하실 수 있는 메뉴입니다.</div>
