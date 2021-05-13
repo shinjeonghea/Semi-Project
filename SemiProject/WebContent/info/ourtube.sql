@@ -230,3 +230,7 @@ select br.title, to_char(br.time_posted,'YYYY.MM.DD  HH24:MI:SS') as time_posted
   --아이디에 맞는 사람 불러오기
   select count(*) from member where id='kgs';
   
+  select cm.no, cm.folder_no, bf.folder_name, cm.CHANNEL_name, cm.channel_url 
+  from bookmark_folder bf, CHANNEL_MEMBER cm where cm.folder_no=bf.folder_no and bf.id='kgs' and folder_name='보승'
+  order by cm.no asc
+  
