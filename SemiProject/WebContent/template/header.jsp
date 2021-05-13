@@ -175,10 +175,9 @@
            <form method="post"	action="${pageContext.request.contextPath}/DeleteChannelController.do">
 				<a class="collapse-item"><input type="checkbox"
 					name="${folderlist.folderName}">${channellist.channelName}
-				<input type="submit" value="x"> </a>
 				<input type="hidden" name="folderNo" value="${folderlist.folderNo}">
 				<input type="hidden" name="channelName" value="${channellist.channelName}">
-				<input type="submit" value="x"> </a> 
+				<input type="submit" style="border-radius: 1rem; background-color: #ffffff;border:0;coutline:0;color:#4e73df; font-weight:bold;"  value="x"> </a> 
 			</form>
          </c:if>
          </c:forEach>
