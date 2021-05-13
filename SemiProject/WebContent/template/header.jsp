@@ -2,17 +2,17 @@
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript">
-	function checkAll(chk) {
-		var chbx = radioGroup.elements;
-		for (i = 0; i < chbx.length; i++) {
-			if (chbx[i] == chk) {
-				chbx[i].checked = true;
-			} else {
-				chbx[i].checked = false;
-			}
-		}
+	//체크박스 전체 선택
+	function checkAll(chk){
+	   var chbx = radioGroup.elements;
+	   for (var i=0;i<chbx.length ;i++ ){
+	      if (chbx[i].name==chk){
+	         chbx[i].checked = true ;
+	      }else{
+	          chbx[i].checked = false;
+	      } 
+	   }
 	}
-
 	function addFolder(form) {
 		let addfolderName= document.getElementById("addfolderName");
 		
@@ -20,7 +20,6 @@
 		<c:forEach items="${sessionScope.flist}" var="folderNameList">
 			arr.push("${folderNameList.folderName}");
 		</c:forEach>
-
  		
   		for(let i=0;i<arr.length;i++){
 			if(addfolderName.value==arr[i]){
@@ -40,7 +39,6 @@
 		<c:forEach items="${sessionScope.flist}" var="folderNameList">
 			arr.push("${folderNameList.folderName}");
 		</c:forEach>
-
  		let j=0; 
   		for(let i=0;i<arr.length;i++){
 			if(delfolderName.value==arr[i]){
@@ -62,17 +60,13 @@
 		var ret = window.open(url, name, specs);
 	}
 	
-	function delChannel(folderName,channelName){
-		let form = document.delChannel1;
-		form.innerHTML="<input name='folderName' value='"+folderName+"'>";
-		form.delChannel1.submit();
-	}
-	function selectAll(selectAll)  {
+	
+	function selectAll()  {
 		   const checkboxes 
 		        = document.getElementsByName("${folderlist.folderName}");
 		   
 		   checkboxes.forEach((checkbox) => {
-		     checkbox.checked = selectAll.checked;
+		     checkbox.checked = true;
 		   })
 		 }
 </script>
@@ -163,26 +157,28 @@
       <div style="vertical-align:middle">
      
       <a class="nav-link collapsed" href="#"
+      <%-- folder 보여w주기 --%>
       data-toggle="collapse" data-target="#hello${status.index}" aria-expanded="true"
       aria-controls="#hello${status.index}"><span>${folderlist.folderName}</span>
    </a> 
    </div>
    </div>
-   <%-- id값을 a태그의 data-target으로 넣어주기! --%>
-   
+    <%-- id값을 a태그의 data-target으로 넣어주기! --%>
+   	
       <div id="hello${status.index}" class="collapse" aria-labelledby="hello${status.index}"
          data-parent="#accordionSidebar">
          <div class="bg-white py-2 collapse-inner rounded">
-		  <a class="collapse-item" name="${folderlist.folderName}" href="javascript:void(0);" onClick="checkAll(this.name);" attr-a="onClick:attr-a">전체선택</a>
+		 <a class="collapse-item" name="${folderlist.folderName}" href="javascript:void(0);" onClick="checkAll(this.name);" attr-a="onClick:attr-a">전체선택</a>
+         <%-- channel보여주기--%>
          <c:forEach var="channellist" items="${sessionScope.clist}" >
    		 <c:if test="${folderlist.folderName eq channellist.folderName}">
-   		
-            <form method="post"	action="${pageContext.request.contextPath}/DeleteChannelController.do">
-				<a class="collapse-item">
-				<input type="checkbox" name="${folderlist.folderName}">${channellist.channelName}
-					<input type="hidden" name="folderNo" value="${folderlist.folderNo}">
-					<input type="hidden" name="channelName" value="${channellist.channelName}">
-					<input type="submit" style="border-radius: 1rem; background-color: #ffffff;border:0;coutline:0;color:#4e73df; font-weight:bold;" value="x"> </a> 
+           <form method="post"	action="${pageContext.request.contextPath}/DeleteChannelController.do">
+				<a class="collapse-item"><input type="checkbox"
+					name="${folderlist.folderName}">${channellist.channelName}
+				<input type="submit" value="x"> </a>
+				<input type="hidden" name="folderNo" value="${folderlist.folderNo}">
+				<input type="hidden" name="channelName" value="${channellist.channelName}">
+				<input type="submit" value="x"> </a> 
 			</form>
          </c:if>
          </c:forEach>
