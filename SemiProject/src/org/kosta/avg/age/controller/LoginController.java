@@ -17,7 +17,6 @@ public class LoginController implements Controller {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("hi");
 		ArrayList<BookMarkChannelVO> channelList = new ArrayList<BookMarkChannelVO>();
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
@@ -48,4 +47,3 @@ public class LoginController implements Controller {
 	}
 
 }
-
