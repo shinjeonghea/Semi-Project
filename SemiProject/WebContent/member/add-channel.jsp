@@ -20,8 +20,7 @@
 		let selectFolder = select.options[select.selectedIndex].value;
 		alert(selectFolder);
 		document.addChannel1.submit();
-		//opener.document.location.reload();
-		//window.close();
+
 		}
 	}
 </script>

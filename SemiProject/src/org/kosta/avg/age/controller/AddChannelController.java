@@ -50,6 +50,7 @@ public class AddChannelController implements Controller{
 		session.setAttribute("clist", channelList);
 		
 		return "member/add-channel-ok.jsp";
+
 	}
 	
 	private String substringBetween(String str, String open, String close) {
