@@ -24,14 +24,14 @@ public class ReceiveFolderController implements Controller {
 		MemberVO mvo = (MemberVO)session.getAttribute("mvo");
 		String postNo = request.getParameter("postNo");
 		
+		// 게시글에서 채널을 추가함.
+		BookMarkDAO.getInstance().receiveChannelFromPost(mvo.getId(), postNo);
 
+		// 세션을 새로 갱신해줌.
 		ArrayList<BookMarkChannelVO> channelList = new ArrayList<BookMarkChannelVO>();
 		//폴더 값 가져오기
 		ArrayList<BookMarkFolderVO> folderList = BookMarkDAO.getInstance().getFolderNameByMemberId(request.getParameter("id"));
-		//폴더 값 확인 코드
-		/*for(int i=0;i<folderNameList.size();i++) {
-			System.out.println(folderNameList.get(i));
-		}*/ 
+		
 		session.setAttribute("flist", folderList);
 		for(int i=0;i<folderList.size();i++) {
 			channelList.addAll(BookMarkDAO.getInstance().getChannelByMemberId(folderList.get(i).getFolderNo()));
@@ -41,8 +41,6 @@ public class ReceiveFolderController implements Controller {
 		}
 		session.setAttribute("clist", channelList);
 		
-		
-		BookMarkDAO.getInstance().receiveChannelFromPost(mvo.getId(), postNo);
 		return "redirect:PostDetailNoHitsController.do?postNo="+postNo;
 	}
 

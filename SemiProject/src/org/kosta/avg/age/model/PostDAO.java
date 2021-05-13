@@ -415,5 +415,200 @@ public class PostDAO {
 		return folderName;
 	}
 	
+	/**
+	 * 게시글 검색하기
+	 * 제목, 내용
+	 * @param title
+	 * @param pagingBean
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<PostVO> getPostingListByOption(String searchOption, String keyword, PagingBean pagingBean) throws SQLException{
+		ArrayList<PostVO> list=new ArrayList<PostVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con = getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("select br.rnum, br.post_no, br.title, m.nick, br.time_posted, br.hits, br.content ");
+			sql.append("from (select row_number() over(order by post_no desc) as rnum, id, post_no, ");
+			sql.append("title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content ");
+			sql.append("from BOARD_RECOMMEND where ");
+			sql.append(searchOption);
+			sql.append(" like '%'||?||'%' ");
+			sql.append(") br, member m ");
+			sql.append("where br.id=m.id and ");
+			sql.append(searchOption);
+			sql.append(" like '%'||?||'%' ");
+			sql.append("and rnum between ? and ?");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, keyword);
+			pstmt.setString(2, keyword);
+			pstmt.setInt(3, pagingBean.getStartRowNumber());
+			pstmt.setInt(4, pagingBean.getEndRowNumber());
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				PostVO pvo = new PostVO();
+				pvo.setPostNo(rs.getString("post_no"));
+				pvo.setTitle(rs.getString("title"));
+				pvo.setTimePosted(rs.getString("time_posted"));
+				pvo.setHits(rs.getInt("hits"));
+				MemberVO mvo = new MemberVO();
+				mvo.setNick(rs.getString("nick"));
+				pvo.setMvo(mvo);
+				list.add(pvo);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return list;
+	}
 	
+	/**
+	 * 게시글 검색하기
+	 * 제목, 내용
+	 * @param title
+	 * @param pagingBean
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<PostVO> getPostingListByNick(String nick, String keyword, PagingBean pagingBean) throws SQLException{
+		ArrayList<PostVO> list=new ArrayList<PostVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con = getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("select br.rnum, br.post_no, br.title, m.nick, br.time_posted, br.hits, br.content ");
+			sql.append("from (select row_number() over(order by post_no desc) as rnum, id, post_no, ");
+			sql.append("title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content ");
+			sql.append("from BOARD_RECOMMEND ) br, member m ");
+			sql.append("where br.id=m.id and ");
+			sql.append(nick);
+			sql.append(" like '%'||?||'%' ");
+			sql.append("and rnum between ? and ?");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, keyword);
+			pstmt.setInt(2, pagingBean.getStartRowNumber());
+			pstmt.setInt(3, pagingBean.getEndRowNumber());
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				PostVO pvo = new PostVO();
+				pvo.setPostNo(rs.getString("post_no"));
+				pvo.setTitle(rs.getString("title"));
+				pvo.setTimePosted(rs.getString("time_posted"));
+				pvo.setHits(rs.getInt("hits"));
+				MemberVO mvo = new MemberVO();
+				mvo.setNick(rs.getString("nick"));
+				pvo.setMvo(mvo);
+				list.add(pvo);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return list;
+	}
+		
+	public ArrayList<PostVO> getPostingListByTitleAndContent(String title, String content, PagingBean pagingBean) throws SQLException{
+		ArrayList<PostVO> list=new ArrayList<PostVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con = getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("select br.post_no, br.rnum, br.title, m.nick, br.time_posted, br.hits, br.content ");
+			sql.append("from (select row_number() over(order by post_no desc) as rnum, id, post_no, ");
+			sql.append("title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content ");
+			sql.append("from BOARD_RECOMMEND where title like '%'||?||'%' ");
+			sql.append("and content like '%'||?||'%' ) br, MEMBER m ");
+			sql.append("where br.id=m.id and title like '%'||?||'%' and content like '%'||?||'%' ");
+			sql.append("and rnum between ? and ?");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setString(3, title);
+			pstmt.setString(4, content);
+			pstmt.setInt(5, pagingBean.getStartRowNumber());
+			pstmt.setInt(6, pagingBean.getEndRowNumber());
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				PostVO pvo = new PostVO();
+				pvo.setPostNo(rs.getString("post_no"));
+				pvo.setTitle(rs.getString("title"));
+				pvo.setTimePosted(rs.getString("time_posted"));
+				pvo.setHits(rs.getInt("hits"));
+				MemberVO mvo = new MemberVO();
+				mvo.setNick(rs.getString("nick"));
+				pvo.setMvo(mvo);
+				list.add(pvo);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+
+	/**
+	 * searchOption으로 을 골라~
+	 * keyword로 검색했을 때 나오는 post의 개수
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getTotalPostCountByOption(String searchOption, String keyword) throws SQLException {
+		int totalCount = 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = dataSource.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("select count(*) ");
+			sql.append("from BOARD_RECOMMEND br, MEMBER m ");
+			sql.append("where br.id=m.id and ");
+			sql.append(searchOption);
+			sql.append(" like '%'||?||'%'");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, keyword);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				totalCount = rs.getInt(1);
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+		return totalCount;
+	}
+	public int getTotalPostCountByTitleAndContent(String keyword) throws SQLException {
+		int totalCount = 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = dataSource.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("select count(*) ");
+			sql.append("from ( ");
+			sql.append("select row_number() over(order by post_no desc) as rnum, id, post_no, ");
+			sql.append("title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content ");
+			sql.append("from BOARD_RECOMMEND where title like '%'||?||'%' ");
+			sql.append("and content like '%'||?||'%' ");
+			sql.append(" ) br, MEMBER m ");
+			sql.append("where br.id=m.id and title like '%'||?||'%' and content like '%'||?||'%'");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, keyword);
+			pstmt.setString(2, keyword);
+			pstmt.setString(3, keyword);
+			pstmt.setString(4, keyword);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				totalCount = rs.getInt(1);
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+		return totalCount;
+	}
 }

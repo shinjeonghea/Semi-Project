@@ -229,3 +229,130 @@ select br.title, to_char(br.time_posted,'YYYY.MM.DD  HH24:MI:SS') as time_posted
   --아이디에 맞는 사람 불러오기
   select count(*) from member where id='kgs';
   
+  
+  -- 게시글 제목 검색
+  select * from MEMBER;
+  select * from BOARD_RECOMMEND where title like '%추천%';
+  select * from BOARD_RECOMMEND where title like '%보승%';
+  select * from BOARD_RECOMMEND where title like '%안녕%';
+  select * from BOARD_RECOMMEND where content like '%안녁%' ;
+  select * from BOARD_RECOMMEND where title like '%안녕%' or content like '%안녕%';
+  
+ select br.post_no, br.title, m.nick, to_char(br.time_posted, 'yyyy-mm-dd'), br.hits
+ from BOARD_RECOMMEND br, MEMBER m
+ where br.id=m.id and title like '%안녕%';
+ 
+  select count(*)
+ from BOARD_RECOMMEND br, MEMBER m
+ where br.id=m.id and title like '%안녕%';
+  -- 페이징을 위한..
+ select br.rnum, br.title, m.nick, br.time_posted, br.hits
+ from (select row_number() over(order by post_no desc) as rnum, id, post_no, 
+ 		title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits
+ 	   from BOARD_RECOMMEND
+ 	   where title like '%안녕%') br, MEMBER m
+ where br.id=m.id and title like '%안녕%' and rnum between 1 and 5;
+ 
+ select row_number() over(order by post_no desc) as rnum, id, post_no, 
+ 		title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits
+ 	   from BOARD_RECOMMEND
+ 	   where title like '%안녕%';
+ 	   
+ 	   
+ 	   
+select br.rnum, br.title, m.nick, br.time_posted, br.hits, br.content
+from (select row_number() over(order by post_no desc) as rnum, id, post_no, title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content 
+		from BOARD_RECOMMEND where title like '%안녕%' and content like '%안녕%' )br, MEMBER m 
+where br.id=m.id and title like '%안녕%' and content like '%안녕%' and rnum between 1 and 5 ;
+
+
+
+
+
+
+
+
+
+
+
+
+select br.post_no, br.rnum, br.title, m.nick, br.time_posted, br.hits, br.content 
+from (select row_number() over(order by post_no desc) as rnum, id, post_no, 
+	  title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content 
+	  from BOARD_RECOMMEND where title like '%안녕%' and content like '%안녕%' ) br, MEMBER m 
+where br.id=m.id and title like '%안녕%' and content like '%안녕%' and rnum between 1 and 5;
+
+select br.post_no, br.rnum, br.title, m.nick, br.time_posted, br.hits, br.content 
+from (select row_number() over(order by post_no desc) as rnum, id, post_no, 
+	  title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content 
+	  from BOARD_RECOMMEND ) br, MEMBER m 
+where br.id=m.id and title like '%안녕%' and content like '%안녕%' and rnum between 1 and 5;
+
+
+select br.rnum, br.post_no, br.title, m.nick, br.time_posted, br.hits, br.content 
+from (
+	  select row_number() over(order by post_no desc) as rnum, id, post_no,
+	  		 title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content
+	  from BOARD_RECOMMEND 
+) br, MEMBER m
+where br.id=m.id and nick like '%고보승%' and rnum BETWEEN 1 and 5;
+
+select br.rnum, br.post_no, br.title, m.nick, br.time_posted, br.hits, br.content 
+from (
+	  select row_number() over(order by post_no desc) as rnum, id, post_no,
+	  		 title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content
+	  from BOARD_RECOMMEND 
+	  where title like '%안녕%'
+) br, MEMBER m
+where br.id=m.id and title like '%안녕%' and rnum BETWEEN 1 and 5;
+
+
+select rnum, br.post_no, br.title, time_posted, br.hits, m.nick 
+from (
+	select  row_number() over(order by post_no desc) as rnum, br.post_no, br.title, to_char(br.time_posted,'yyyy-mm-dd') as time_posted, br.hits, br.id
+	from board_recommend br
+) br, member m
+where m.id=br.id AND rnum BETWEEN 1 AND 5;
+
+
+select br.rnum, br.post_no, br.title, m.nick, br.time_posted, br.hits, br.content 
+from (select row_number() over(order by post_no desc) as rnum, id, post_no,
+	  title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content
+	  from BOARD_RECOMMEND ) br, MEMBER m
+where br.id=m.id and title like '%안녕%' and rnum between 1 and 6;
+
+select count(*)
+from (select row_number() over(order by post_no desc) as rnum, id, post_no,
+	  title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content
+	  from BOARD_RECOMMEND ) br, MEMBER m
+where br.id=m.id and title like '%안녕%';
+
+select count(*)
+from (select row_number() over(order by post_no desc) as rnum, id, post_no,
+	  title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content
+	  from BOARD_RECOMMEND ) br, MEMBER m
+where br.id=m.id and nick like '%고보승%';
+
+
+
+select br.post_no, br.rnum, br.title, m.nick, br.time_posted, br.hits, br.content 
+from (
+		select row_number() over(order by post_no desc) as rnum, id, post_no, title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content 
+		from BOARD_RECOMMEND where title like '%안녕%'
+		and content like '%안녕%' 
+	 ) br, MEMBER m 
+where br.id=m.id and title like '%안녕%' and content like '%안녕%' and rnum between 1 and 5;
+
+-- 이거 아님
+select count(*) 
+from BOARD_RECOMMEND br, MEMBER m 
+where br.id=m.id and title like '%안녕%' or content like '%안녕%' ;
+
+select count(*)
+from (
+		select row_number() over(order by post_no desc) as rnum, id, post_no, 
+		title, to_char(time_posted, 'yyyy-mm-dd') as time_posted, hits, content 
+		from BOARD_RECOMMEND where title like '%안녕%'
+		and content like '%안녕%' 
+	 ) br, MEMBER m 
+where br.id=m.id and title like '%안녕%' and content like '%안녕%' and rnum between 1 and 5;

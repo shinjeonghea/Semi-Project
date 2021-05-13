@@ -32,7 +32,7 @@
 	</table>
 	<div class="btnArea">
 		<button type="submit" class="btn">확인</button>
-		<button type="reset" class="btn">취소</button>
+		<button type="reset" class="btn">원글 복원</button>
 	</div>
 </form>
 
