@@ -31,7 +31,7 @@ public class MemberDAO {
 		if (con != null)
 			con.close();
 	}
-	
+
 
 	//로그인
 	public MemberVO login(String id, String password) throws SQLException {
@@ -104,4 +104,5 @@ public class MemberDAO {
 		}
 		return 2;
 	}
+
 }
