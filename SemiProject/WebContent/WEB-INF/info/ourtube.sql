@@ -17,6 +17,13 @@ select * from bookmark_board;
 select * from board_recommend;
 select * from member;
 
+-----------------------------------------------
+TRUNCATE TABLE channel_member;
+TRUNCATE TABLE bookmark_folder;
+TRUNCATE TABLE bookmark_board;
+TRUNCATE TABLE board_recommend;
+TRUNCATE TABLE member;
+
 ------------------------------------------------------------------------------------------------
 --멤버 테이블----------------------------------------------
 create table member(
@@ -73,8 +80,12 @@ create sequence bookmark_board_seq;
 -------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------
 --아이디 등록-----------------------------------------------------------------------
-insert into member values('kgs','1','고보승');
-insert into member values('java','a','김수권');
+insert into member values('kgs','1234','고보승');
+insert into member values('java','1234','김수권');
+insert into member values('sjh', '1234', '신정희');
+insert into member values('kmk', '1234', '권민경');
+insert into member values('yyj', '1234', '유예주');
+insert into member values('bks', '1234', '백경성');
 
 --북마크 폴더 등록---------------------------------------------------------------
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '요리');
@@ -85,9 +96,20 @@ insert into bookmark_folder values(bookmark_folder_seq.nextval, 'java', '요리'
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'java', '요리'); -- 이것도 안되는게 정상
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'java', '운동');
 
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kmk', '힙합');
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kmk', '인디밴드 노래');
+
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'yyj', '군침싹');
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'yyj', '코인');
+
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'bks', '옷');
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'bks', '신발');
+
 select * from bookmark_folder;
 
 
+delete from member
+where id = 'sjh';
 --북마크 유저용 등록-------------------------------------------------------------
 insert into channel_member values(channel_member_seq.nextval,
 (select folder_no from bookmark_folder where id='kgs' and folder_name='요리'),
@@ -361,5 +383,4 @@ select folder_name from BOOKMARK_FOLDER where id='kgs';
 select count(*) from BOOKMARK_FOLDER where id='kgs' and folder_name='요리';
 
 select count(*) from BOOKMARK_FOLDER where id='kgs' and folder_name='요리121212';
-
 

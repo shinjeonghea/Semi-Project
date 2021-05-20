@@ -70,7 +70,6 @@
 			</button>
 			--%>
 		</div>
-		
 		<%-- 게시글 검색 start (회원만 가능)--%>
 		<c:if test="${ sessionScope.mvo!=null }">
 		<div>
@@ -82,11 +81,11 @@
 		        <option value="nick">작성자</option>
 		    </select>
 		    <input type="text" name="keyword" required="required">
-		    <input type="submit" value="조회">
+		    <input type="submit" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" value="조회">
 		</form>
 		</div>
 		</c:if>
-		
+		<%-- 게시글 검색 end --%>
 		
 		<%-- 페이징 start --%>
 		<c:set var="pb" value="${requestScope.pagingBean}"></c:set>

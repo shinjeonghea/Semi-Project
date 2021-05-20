@@ -67,9 +67,11 @@
 				<div class="container-fluid">
 					<%-- 내용 import --%>
 					<c:import url="${ url }"></c:import>
+					<c:import url="/template/footer.jsp"></c:import>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
 </html>
+

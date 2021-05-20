@@ -17,7 +17,6 @@ public class LoginController implements Controller {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("hi");
 		ArrayList<BookMarkChannelVO> channelList = new ArrayList<BookMarkChannelVO>();
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
@@ -36,9 +35,9 @@ public class LoginController implements Controller {
 			for(int i=0;i<folderList.size();i++) {
 				channelList.addAll(BookMarkDAO.getInstance().getChannelByMemberId(folderList.get(i).getFolderNo()));
 			}
-			for(int k=0;k<channelList.size();k++) {
+			/*for(int k=0;k<channelList.size();k++) {
 				System.out.println(channelList.get(k));
-			}
+			}*/
 			session.setAttribute("clist", channelList);
 			
 			return "redirect:index.jsp";
@@ -48,4 +47,3 @@ public class LoginController implements Controller {
 	}
 
 }
-

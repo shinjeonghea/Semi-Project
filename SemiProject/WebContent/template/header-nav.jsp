@@ -1,4 +1,4 @@
-      <%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -7,6 +7,39 @@
 		var f=confirm("로그아웃하시겠습니까?");
 		if(f)
 			location.href="${pageContext.request.contextPath}/LogoutController.do";
+	}
+	//유튜브 팝업창 띄우면서 검색하기
+	function youtubeSearch(){
+		//선택된 체크박스 값 가져오기		
+		const checkedItem = document.querySelectorAll('input[type="checkbox"]:checked');
+		let checkedValue = '';
+		for(let i=0;i<checkedItem.length;i++){
+			//마지막 채널에는 OR 붙이기
+			if(i!=checkedItem.length-1){
+				checkedValue = checkedValue + "\"" + checkedItem[i].value + "\""+ "OR" ;
+			//마지막 채널에는 OR 안 붙이기
+			}else if (i==checkedItem.length-1){
+				checkedValue = checkedValue + "\"" + checkedItem[i].value + "\"";
+			}
+		}
+		
+		//검색창에 쓴 값 가져오기
+		let searchKeyword = document.getElementById("searchKeyword").value;		
+		
+		//팝업 띄우면서 검색하기
+		if(searchKeyword==""||searchKeyword==null){
+			var url = "https://www.youtube.com/results?search_query="+ checkedValue ;
+	        var name = "";
+	        var option = "width = 1200, height = 800, top = 100, left = 200, location = no"
+	        window.open(url, name, option);
+		}else{
+			var url = "https://www.youtube.com/results?search_query="+searchKeyword + "AND" + "(" + checkedValue + ")";
+	        var name = "";
+	        var option = "width = 1200, height = 800, top = 100, left = 200, location = no"
+	        window.open(url, name, option);
+		}
+		
+
 	}
 </script>
                     <!-- Sidebar Toggle (Topbar) -->
@@ -19,9 +52,9 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
+                                aria-label="Search" aria-describedby="basic-addon2" id="searchKeyword">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-primary" type="button" onclick="youtubeSearch()">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
@@ -43,10 +76,10 @@
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
+                                            placeholder="Search for..." aria-label="Search"  id="searchKeyword"
                                             aria-describedby="basic-addon2">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
+                                            <button class="btn btn-primary" type="button" onclick="youtubeSearch()">
                                                 <i class="fas fa-search fa-sm"></i>
                                             </button>
                                         </div>
@@ -108,3 +141,4 @@
                     </ul>
 
                 </nav>
+

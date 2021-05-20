@@ -62,7 +62,7 @@
 			 	<button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="float: right"
 			 	 onclick="openWritePostForm()"><i class="fas fa-fw fa-pencil-alt"></i>글쓰기</button>
 			 </c:if>
-			 
+
 			 <%-- 
 			<button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white"
 				style="float: right">
@@ -70,7 +70,7 @@
 			</button>
 			--%>
 		</div>
-		
+
 		<%-- 게시글 검색 start (회원만 가능)--%>
 		<c:if test="${ sessionScope.mvo!=null }">
 		<div>
@@ -80,15 +80,15 @@
 		        <option value="content">내용</option>
 		        <option value="titleAndContent">내용+제목</option>
 		        <option value="nick">작성자</option>
-		
+
 		    </select>
 		    <input type="text" name="keyword" value="${ param.keyword }" required="required">
 		    <input type="submit" value="조회">
 		</form>
 		</div>
 		</c:if>
-		
-		
+
+
 		<%-- 페이징 start --%>
 		<c:set var="pb" value="${requestScope.pagingBean}"></c:set>
 		<div class="pagingArea">

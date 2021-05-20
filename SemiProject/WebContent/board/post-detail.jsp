@@ -68,7 +68,7 @@
 			<input type="hidden" name="id" value="${ sessionScope.mvo.id }">
 			<input
 				class="btn btn btn-outline-secondary btn-sm btn-primary text-white"
-				style="float: right" type="submit" value="채널 가져오기">
+				style="margin-left:-1px;" type="submit" value="채널 가져오기">
 		</form>
 		</td>
 	</tr>

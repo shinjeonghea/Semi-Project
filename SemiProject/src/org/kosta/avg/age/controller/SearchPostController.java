@@ -19,7 +19,7 @@ public class SearchPostController implements Controller {
 		if (session == null || session.getAttribute("mvo") == null) {
 			return "redirect:PostListController.do";
 		}
-		
+
 		String searchOption = null;
 		String keyword = null;
 		if(request.getParameter("searchOption")==null) {
@@ -28,7 +28,7 @@ public class SearchPostController implements Controller {
 			searchOption = request.getParameter("searchOption");
 			session.setAttribute("searchOption", searchOption);
 		}
-		
+
 		if(request.getParameter("keyword")==null) {
 			keyword = (String) session.getAttribute("keyword");
 		}else {
@@ -41,7 +41,7 @@ public class SearchPostController implements Controller {
 		}else if(searchOption.equals("titleAndContent")) {
 			totalPostCount = PostDAO.getInstance().getTotalPostCountByTitleAndContent(keyword);
 		}
-		
+
 		String pageNo=request.getParameter("pageNo");
 		PagingBean pagingBean=null;
 		if(pageNo==null) {
@@ -51,8 +51,8 @@ public class SearchPostController implements Controller {
 		}
 		//list.jsp 에서 페이징 처리를 위해 pagingBean을 request 영역에 공유한다 
 		request.setAttribute("pagingBean", pagingBean);
-		
-		
+
+
 		ArrayList<PostVO> postList = null;
 		if(searchOption.equals("title") || searchOption.equals("content") ){
 			postList = PostDAO.getInstance().getPostingListByOption(searchOption, keyword, pagingBean);
@@ -64,7 +64,7 @@ public class SearchPostController implements Controller {
 		for(int i=0; i<postList.size(); i++) {
 			System.out.println(postList.get(i));
 		}
-		
+
 		request.setAttribute("pageNo", pageNo);
 		request.setAttribute("postList", postList);
 		request.setAttribute("url", "/board/search-list.jsp");

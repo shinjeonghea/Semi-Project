@@ -30,7 +30,7 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-				<iframe width="830" height="315"
+				<iframe width="780" height="315"
 					src="https://www.youtube.com/embed/iDjQSdN_ig8?autoplay=1&mute=1"
 					frameborder="0"
 					allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
