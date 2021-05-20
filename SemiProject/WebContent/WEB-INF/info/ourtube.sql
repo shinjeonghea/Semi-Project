@@ -416,3 +416,4 @@ select count(*) from BOOKMARK_FOLDER where id='kgs' and folder_name='요리';
 select count(*) from BOOKMARK_FOLDER where id='kgs' and folder_name='요리121212';
 
 
+DELETE FROM channel_member WHERE folder_no='5' ;

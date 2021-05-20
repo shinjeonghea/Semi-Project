@@ -213,7 +213,7 @@
 						<a class="collapse-item">
 						<input type="checkbox"	name="${folderlist.folderName}" value="${channellist.channelName}">
 						${channellist.channelName}
-						<input type="button" onclick="delChannel1('${folderlist.folderNo}', '${channellist.channelName}')" style="border-radius: 1rem; background-color: #ffffff; border: 0; coutline: 0; color: #4e73df; font-weight: bold;"	value="x"> </a>
+						<input type="button" onclick="delChannel1('${folderlist.folderNo}', '${channellist.channelName}');" style="border-radius: 1rem; background-color: #ffffff; border: 0; coutline: 0; color: #4e73df; font-weight: bold;"	value="x"> </a>
 												
 									</c:if>
 								</c:forEach>
