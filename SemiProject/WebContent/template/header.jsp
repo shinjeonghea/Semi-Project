@@ -96,7 +96,6 @@
 		
 	}
 	
-	
 </script>
 <!-- Sidebar -->
 <ul
@@ -135,8 +134,8 @@
 			<li class="nav-item">
 				<%-- data-target에 id값 넣기! --%> <a class="nav-link collapsed"
 				href="#" data-toggle="collapse" data-target="#hello"
-				aria-expanded="true" aria-controls="#hello"> <i
-					class="fas fa-fw fa-wrench"></i> <span> 즐겨찾기폴더 </a> <%-- id값을 a태그의 data-target으로 넣어주기! --%>
+				aria-expanded="true" aria-controls="#hello"> 
+				<i class="fas fa-fw fa-wrench"></i><span> 즐겨찾기폴더 </a> <%-- id값을 a태그의 data-target으로 넣어주기! --%>
 
 				<div id="hello" class="collapse"
 					aria-labelledby="hello${status.index}"
@@ -177,7 +176,7 @@
 			<hr class="sidebar-divider">
 
 			<%-- 즐겨찾기 폴더 (for) --%>
-			<div class="sidebar-heading">즐겨찾기 폴더</div>
+			<div class="sidebar-heading"><div style="line-height:3rem">즐겨찾기 폴더</div></div>
 
 			<!-- Nav Item - Utilities Collapse Menu -->
 			<!-- 폴더 들고오는 foreach문 -->

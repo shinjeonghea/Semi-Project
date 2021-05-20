@@ -9,12 +9,6 @@ drop sequence bookmark_board_seq;
 drop sequence bookmark_folder_seq;
 drop sequence channel_member_seq;
 
-<<<<<<< HEAD
-DELETE FROM channel_member where folder_no='6' and channel_name='MBCNEWS';
-DELETE FROM bookmark_folder where id='kgs' and folder_name='근력운동';
-DELETE FROM bookmark_folder where id='kgs' and folder_name='공부용 음악';
-=======
->>>>>>> refs/remotes/origin/main
 ------------------------------------------------------------------------------------------------
 --각 테이블 select로 확인--------------------------------------------
 select * from channel_member;
@@ -22,6 +16,13 @@ select * from bookmark_folder;
 select * from bookmark_board;
 select * from board_recommend;
 select * from member;
+
+-----------------------------------------------
+TRUNCATE TABLE channel_member;
+TRUNCATE TABLE bookmark_folder;
+TRUNCATE TABLE bookmark_board;
+TRUNCATE TABLE board_recommend;
+TRUNCATE TABLE member;
 
 ------------------------------------------------------------------------------------------------
 --멤버 테이블----------------------------------------------
@@ -36,7 +37,6 @@ create table bookmark_folder(
 folder_no number primary key,
 id varchar2(20) not null,
 folder_name varchar2(100) not null,
-<<<<<<< HEAD
 constraint bookmark_folder_fk 
 foreign key(id) 
 references member(id)
@@ -55,29 +55,13 @@ create table channel_member(
 	foreign key(folder_no) 
 	references bookmark_folder(folder_no)
 	on delete cascade
-=======
 constraint bookmark_folder_fk foreign key(id) references member(id)
->>>>>>> refs/remotes/origin/main
 );
-<<<<<<< HEAD
 
-=======
+
 ALTER TABLE bookmark_folder ADD UNIQUE (id,folder_name);
 create sequence bookmark_folder_seq;
 
---채널 멤버 테이블 생성-------------------------------------------
-create table channel_member(
-   no number primary key,
-   folder_no number not null,
-   channel_name varchar2(50) not null,
-   channel_url varchar2(100),
-   constraint channel_member_fk 
-   foreign key(folder_no) 
-   references bookmark_folder(folder_no)
-   on delete cascade
-);
->>>>>>> refs/remotes/origin/main
-create sequence channel_member_seq;
 --추천보드 테이블---------------------------------------------------
 create table board_recommend(
 	post_no number primary key,
@@ -107,12 +91,15 @@ create sequence bookmark_board_seq;
 -------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------
 --아이디 등록-----------------------------------------------------------------------
-insert into member values('kgs','1','고보승');
-insert into member values('java','a','김수권');
+insert into member values('kgs','1234','고보승');
+insert into member values('java','1234','김수권');
+insert into member values('sjh', '1234', '신정희');
+insert into member values('kmk', '1234', '권민경');
+insert into member values('yyj', '1234', '유예주');
+insert into member values('bks', '1234', '백경성');
 
 --북마크 폴더 등록---------------------------------------------------------------
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '요리');
-<<<<<<< HEAD
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '사랑');
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '근력운동');
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '공부용 음악');
@@ -123,7 +110,8 @@ select * from bookmark_folder;
 
 --북마크 폴더 업데이트---
 update bookmark_folder set folder_name='사랑' where id='kgs' and folder_name='요리'
-=======
+
+
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '요리'); -- 여기서 에러가 뜨면 유니크 성공
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '근력운동');
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kgs', '공부용 음악');
@@ -131,10 +119,20 @@ insert into bookmark_folder values(bookmark_folder_seq.nextval, 'java', '요리'
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'java', '요리'); -- 이것도 안되는게 정상
 insert into bookmark_folder values(bookmark_folder_seq.nextval, 'java', '운동');
 
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kmk', '힙합');
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'kmk', '인디밴드 노래');
+
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'yyj', '군침싹');
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'yyj', '코인');
+
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'bks', '옷');
+insert into bookmark_folder values(bookmark_folder_seq.nextval, 'bks', '신발');
+
 select * from bookmark_folder;
 
->>>>>>> refs/remotes/origin/main
 
+delete from member
+where id = 'sjh';
 --북마크 유저용 등록-------------------------------------------------------------
 insert into channel_member values(channel_member_seq.nextval,
 (select folder_no from bookmark_folder where id='kgs' and folder_name='요리'),
@@ -170,17 +168,9 @@ insert into channel_member values(channel_member_seq.nextval,
 (select folder_no from bookmark_folder where id='java' and folder_name='근력운동'),
 '강경원', 'https://www.youtube.com/channel/UCuwyPNJScQ5luAV7b8juFfg');
 
-<<<<<<< HEAD
-DELETE FROM bookmark_folder where id='kgs' and folder_name='요리';
-DELETE FROM channel_member where channel_name='백종원의 요리비책';
 
-select * from BOOKMARK_FOLDER;
-select * from CHANNEL_MEMBER;
-update bookmark_folder set folder_name='맛집' where id='kgs' and folder_name='사랑';
-=======
 select * from CHANNEL_MEMBER;
 
->>>>>>> refs/remotes/origin/main
 
 --추천글 등록, 추천글용 폴더 등록---------------------------------------------
 insert into board_recommend(post_no,title,content,time_posted,id)
@@ -269,7 +259,6 @@ select br.title, to_char(br.time_posted,'YYYY.MM.DD  HH24:MI:SS') as time_posted
 from board_recommend br, member m
 where br.id=m.id and br.post_no=1
   
-<<<<<<< HEAD
   --updateHit---------------------------
   update board_recommend set hits=hits+1 where no=1
   
@@ -277,7 +266,6 @@ where br.id=m.id and br.post_no=1
   delete 
   from bookmark_folder bf, channel_member cm
   where bf.folder_no=cm.folder_no and id=? and folder_no=?
-=======
 
 select * from MEMBER;
 --updateHit---------------------------
@@ -428,4 +416,3 @@ select count(*) from BOOKMARK_FOLDER where id='kgs' and folder_name='요리';
 select count(*) from BOOKMARK_FOLDER where id='kgs' and folder_name='요리121212';
 
 
->>>>>>> refs/remotes/origin/main

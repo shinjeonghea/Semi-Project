@@ -35,9 +35,9 @@ public class LoginController implements Controller {
 			for(int i=0;i<folderList.size();i++) {
 				channelList.addAll(BookMarkDAO.getInstance().getChannelByMemberId(folderList.get(i).getFolderNo()));
 			}
-			for(int k=0;k<channelList.size();k++) {
+			/*for(int k=0;k<channelList.size();k++) {
 				System.out.println(channelList.get(k));
-			}
+			}*/
 			session.setAttribute("clist", channelList);
 			
 			return "redirect:index.jsp";

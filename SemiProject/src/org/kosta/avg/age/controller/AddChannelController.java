@@ -14,7 +14,6 @@ import org.kosta.avg.age.model.MemberVO;
 import org.kosta.avg.age.model.YoutubeVO;
 
 public class AddChannelController implements Controller{
-
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session=request.getSession(false);
@@ -29,10 +28,10 @@ public class AddChannelController implements Controller{
 		String addChannelName=substringBetween(youtube_str, "title=", ",");
 		String channelURL=substringBetween(youtube_str, "channelURL=", ",");
 		//System.out.println("ㅁㅁㅁㅁㅁㅁ"+title+" " +channelURL);
-		System.out.println(id);
+		/*System.out.println(id);
 		System.out.println(addfolderName);
 		System.out.println(addChannelName);
-		System.out.println(channelURL);
+		System.out.println(channelURL);*/
 		BookMarkDAO.getInstance().addChannelMember(id, addfolderName, addChannelName, channelURL);
 		
 		ArrayList<BookMarkChannelVO> channelList = new ArrayList<BookMarkChannelVO>();
@@ -42,9 +41,10 @@ public class AddChannelController implements Controller{
 			channelList.addAll(BookMarkDAO.getInstance().getChannelByMemberId(folderList.get(i).getFolderNo()));
 		}
 		
-		for(int k=0;k<channelList.size();k++) {
+		/*for(int k=0;k<channelList.size();k++) {
 			System.out.println(channelList.get(k));
-		}
+		}*/
+
 		
 		session.setAttribute("flist", folderList);
 		session.setAttribute("clist", channelList);

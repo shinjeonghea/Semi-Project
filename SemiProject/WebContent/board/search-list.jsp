@@ -62,7 +62,7 @@
 			 	<button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" style="float: right"
 			 	 onclick="openWritePostForm()"><i class="fas fa-fw fa-pencil-alt"></i>글쓰기</button>
 			 </c:if>
-			 
+
 			 <%-- 
 			<button type="button" class="btn btn btn-outline-secondary btn-sm btn-primary text-white"
 				style="float: right">
@@ -70,42 +70,44 @@
 			</button>
 			--%>
 		</div>
+
 		<%-- 게시글 검색 start (회원만 가능)--%>
 		<c:if test="${ sessionScope.mvo!=null }">
 		<div>
-		<form method="post" action="${pageContext.request.contextPath}/SearchPostController.do">
+		<form name="searchform" method="post" action="${pageContext.request.contextPath}/SearchPostController.do">
 		    <select name="searchOption">
 		        <option value="title">제목</option>
 		        <option value="content">내용</option>
 		        <option value="titleAndContent">내용+제목</option>
 		        <option value="nick">작성자</option>
+
 		    </select>
-		    <input type="text" name="keyword" required="required">
-		    <input type="submit" class="btn btn btn-outline-secondary btn-sm btn-primary text-white" value="조회">
+		    <input type="text" name="keyword" value="${ param.keyword }" required="required">
+		    <input type="submit" value="조회">
 		</form>
 		</div>
 		</c:if>
-		<%-- 게시글 검색 end --%>
-		
+
+
 		<%-- 페이징 start --%>
 		<c:set var="pb" value="${requestScope.pagingBean}"></c:set>
 		<div class="pagingArea">
 			<ul class="pagination justify-content-center" style="margin-top: 20px">
 				<c:if test="${pb.previousPageGroup}">
-					<li class="page-item"><a class="page-link" href="PostListController.do?pageNo=${pb.startPageOfPageGroup-1}">&laquo;</a></li>
+					<li class="page-item"><a class="page-link" href="SearchPostController.do?pageNo=${pb.startPageOfPageGroup-1}">&laquo;</a></li>
 				</c:if>
 				<c:forEach var="page" begin="${pb.startPageOfPageGroup}" end="${pb.endPageOfPageGroup}">
 					<c:choose>
 						<c:when test="${pb.nowPage==page}">
-							<li class="active page-item"><a class="page-link" href="PostListController.do?pageNo=${page}">${page}</a></li>
+							<li class="active page-item"><a class="page-link" href="SearchPostController.do?pageNo=${page}">${page}</a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="page-item"><a class="page-link" href="PostListController.do?pageNo=${page}">${page}</a></li>
+							<li class="page-item"><a class="page-link" href="SearchPostController.do?pageNo=${page}">${page}</a></li>
 						</c:otherwise>
 					</c:choose>		
 				</c:forEach>
 				<c:if test="${pb.nextPageGroup}">
-					<li class="page-item"><a class="page-link" href="PostListController.do?pageNo=${pb.endPageOfPageGroup+1}">&raquo;</a></li>
+					<li class="page-item"><a class="page-link" href="SearchPostController.do?pageNo=${pb.endPageOfPageGroup+1}">&raquo;</a></li>
 				</c:if>	
 			</ul>
 		</div>
